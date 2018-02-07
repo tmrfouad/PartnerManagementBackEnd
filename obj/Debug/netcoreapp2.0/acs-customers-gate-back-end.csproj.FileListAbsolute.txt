@@ -1,0 +1,10 @@
+E:\Development\acs-customers-gate-back-end\bin\Debug\netcoreapp2.0\acs-customers-gate-back-end.deps.json
+E:\Development\acs-customers-gate-back-end\bin\Debug\netcoreapp2.0\acs-customers-gate-back-end.runtimeconfig.json
+E:\Development\acs-customers-gate-back-end\bin\Debug\netcoreapp2.0\acs-customers-gate-back-end.runtimeconfig.dev.json
+E:\Development\acs-customers-gate-back-end\bin\Debug\netcoreapp2.0\acs-customers-gate-back-end.dll
+E:\Development\acs-customers-gate-back-end\bin\Debug\netcoreapp2.0\acs-customers-gate-back-end.pdb
+E:\Development\acs-customers-gate-back-end\obj\Debug\netcoreapp2.0\acs-customers-gate-back-end.csproj.CoreCompileInputs.cache
+E:\Development\acs-customers-gate-back-end\obj\Debug\netcoreapp2.0\acs-customers-gate-back-end.AssemblyInfoInputs.cache
+E:\Development\acs-customers-gate-back-end\obj\Debug\netcoreapp2.0\acs-customers-gate-back-end.AssemblyInfo.cs
+E:\Development\acs-customers-gate-back-end\obj\Debug\netcoreapp2.0\acs-customers-gate-back-end.dll
+E:\Development\acs-customers-gate-back-end\obj\Debug\netcoreapp2.0\acs-customers-gate-back-end.pdb
