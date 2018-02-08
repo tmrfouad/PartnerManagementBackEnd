@@ -27,6 +27,7 @@ namespace acs_customers_gate_back_end
             var connection = Configuration.GetConnectionString("CustomersGateDatabase");
             services.AddEntityFrameworkSqlServer().AddDbContext<CustomersGateContext>(opt => opt.UseSqlServer(connection));
             services.AddMvc();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
