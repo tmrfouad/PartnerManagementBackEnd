@@ -2,24 +2,6 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
-      "EntityFramework.MicrosoftSqlServer/7.0.0-rc1-final": {
-        "type": "package",
-        "compile": {
-          "lib/net451/EntityFramework.MicrosoftSqlServer.dll": {}
-        },
-        "runtime": {
-          "lib/net451/EntityFramework.MicrosoftSqlServer.dll": {}
-        }
-      },
-      "EntityFramework.MicrosoftSqlServer.Design/7.0.0-rc1-final": {
-        "type": "package",
-        "compile": {
-          "lib/net451/EntityFramework.MicrosoftSqlServer.Design.dll": {}
-        },
-        "runtime": {
-          "lib/net451/EntityFramework.MicrosoftSqlServer.Design.dll": {}
-        }
-      },
       "Libuv/1.10.0": {
         "type": "package",
         "dependencies": {
@@ -4768,34 +4750,6 @@
     }
   },
   "libraries": {
-    "EntityFramework.MicrosoftSqlServer/7.0.0-rc1-final": {
-      "sha512": "FMB2MgT5aXMF7qGMwf5AGcmpNFoT4s1w0QJ5h+L8W4gyMxWpYamGp9hms7rOSAWY44ZDl5ZMpxiTfu3nY3Nqeg==",
-      "type": "package",
-      "path": "entityframework.microsoftsqlserver/7.0.0-rc1-final",
-      "files": [
-        "entityframework.microsoftsqlserver.7.0.0-rc1-final.nupkg.sha512",
-        "entityframework.microsoftsqlserver.nuspec",
-        "lib/dotnet5.4/EntityFramework.MicrosoftSqlServer.dll",
-        "lib/dotnet5.4/EntityFramework.MicrosoftSqlServer.xml",
-        "lib/net451/EntityFramework.MicrosoftSqlServer.dll",
-        "lib/net451/EntityFramework.MicrosoftSqlServer.xml",
-        "lib/netcore50/EntityFramework.MicrosoftSqlServer.dll",
-        "lib/netcore50/EntityFramework.MicrosoftSqlServer.xml"
-      ]
-    },
-    "EntityFramework.MicrosoftSqlServer.Design/7.0.0-rc1-final": {
-      "sha512": "T0b+OkTnALXHAnVuaUijNKB5RzkkZ04w8HxbRuCb0BjuaXtfgnYdHL+I+v3ZqkgxQz1Cm//U2Ti1DN3EYpA7GA==",
-      "type": "package",
-      "path": "entityframework.microsoftsqlserver.design/7.0.0-rc1-final",
-      "files": [
-        "entityframework.microsoftsqlserver.design.7.0.0-rc1-final.nupkg.sha512",
-        "entityframework.microsoftsqlserver.design.nuspec",
-        "lib/dnxcore50/EntityFramework.MicrosoftSqlServer.Design.dll",
-        "lib/dnxcore50/EntityFramework.MicrosoftSqlServer.Design.xml",
-        "lib/net451/EntityFramework.MicrosoftSqlServer.Design.dll",
-        "lib/net451/EntityFramework.MicrosoftSqlServer.Design.xml"
-      ]
-    },
     "Libuv/1.10.0": {
       "sha512": "GsCf4q+eyaI49rCPlgYxdxa1SQCysXFFdSJWdstrwxytg4+VPYLYrXD4AT2rjHVJ+UF7SSWX9CapWEYaU4ejVQ==",
       "type": "package",
@@ -12576,40 +12530,36 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "EntityFramework.MicrosoftSqlServer >= 7.0.0-rc1-final",
-      "EntityFramework.MicrosoftSqlServer.Design >= 7.0.0-rc1-final",
       "Microsoft.AspNetCore.All >= 2.0.5",
+      "Microsoft.EntityFrameworkCore.Design >= 2.0.1",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Tamer\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {},
+    "C:\\Users\\tabuhmead\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\Work\\acs-customers-gate-back-end\\acs-customers-gate-back-end.csproj",
+      "projectUniqueName": "E:\\Development\\acs-customers-gate-back-end\\acs-customers-gate-back-end.csproj",
       "projectName": "acs-customers-gate-back-end",
-      "projectPath": "d:\\Work\\acs-customers-gate-back-end\\acs-customers-gate-back-end.csproj",
-      "packagesPath": "C:\\Users\\Tamer\\.nuget\\packages\\",
-      "outputPath": "d:\\Work\\acs-customers-gate-back-end\\obj\\",
+      "projectPath": "E:\\Development\\acs-customers-gate-back-end\\acs-customers-gate-back-end.csproj",
+      "packagesPath": "C:\\Users\\tabuhmead\\.nuget\\packages\\",
+      "outputPath": "E:\\Development\\acs-customers-gate-back-end\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Tamer\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+        "C:\\Users\\tabuhmead\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "E:\\Projects\\References\\Telerik": {},
+        "http://webserver:8090/acsnuget/api": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -12626,17 +12576,14 @@
     "frameworks": {
       "netcoreapp2.0": {
         "dependencies": {
-          "EntityFramework.MicrosoftSqlServer": {
-            "target": "Package",
-            "version": "[7.0.0-rc1-final, )"
-          },
-          "EntityFramework.MicrosoftSqlServer.Design": {
-            "target": "Package",
-            "version": "[7.0.0-rc1-final, )"
-          },
           "Microsoft.AspNetCore.All": {
             "target": "Package",
             "version": "[2.0.5, )"
+          },
+          "Microsoft.EntityFrameworkCore.Design": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[2.0.1, )"
           },
           "Microsoft.NETCore.App": {
             "target": "Package",
@@ -12651,27 +12598,5 @@
         "warn": true
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'EntityFramework.MicrosoftSqlServer 7.0.0-rc1-final' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.0'. This package may not be fully compatible with your project.",
-      "libraryId": "EntityFramework.MicrosoftSqlServer",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v2.0"
-      ]
-    },
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'EntityFramework.MicrosoftSqlServer.Design 7.0.0-rc1-final' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.0'. This package may not be fully compatible with your project.",
-      "libraryId": "EntityFramework.MicrosoftSqlServer.Design",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v2.0"
-      ]
-    }
-  ]
+  }
 }

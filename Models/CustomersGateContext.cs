@@ -7,5 +7,5 @@ public class CustomersGateContext : DbContext
     {
     }
 
-    public DbSet<TodoItem> TodoItems { get; set; }
+    public DbSet<Order> Orders { get; set; }
 }
