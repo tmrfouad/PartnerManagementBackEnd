@@ -26,8 +26,14 @@ namespace acs_customers_gate_back_end
         {
             var connection = Configuration.GetConnectionString("CustomersGateDatabase");
             services.AddEntityFrameworkSqlServer().AddDbContext<CustomersGateContext>(opt => opt.UseSqlServer(connection));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+            });
             services.AddMvc();
-            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,7 +43,7 @@ namespace acs_customers_gate_back_end
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("AllowSpecificOrigin");
             app.UseMvc();
         }
     }

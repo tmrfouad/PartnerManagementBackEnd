@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
+[EnableCors("AllowSpecificOrigin")]
 public class MailController : Controller
 {
     // POST api/Mail
