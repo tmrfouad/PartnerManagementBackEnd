@@ -44,7 +44,7 @@ public class OrdersController : Controller
             _context.Orders.Add(order);
             _context.SaveChanges();
 
-            return CreatedAtRoute("GetOrder", new { id = order.merchant_order_id }, order);
+            return new NoContentResult();
         }
 
         // PUT api/Orders/5
