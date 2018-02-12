@@ -9,9 +9,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180212091543_AddNavigationPropertyOrderToShippingData")]
+    partial class AddNavigationPropertyOrderToShippingData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -15,4 +15,5 @@ public class ShippingData {
     public string country { get; set; }
     public string last_name { get; set; }
     public string state { get; set; }
+    public Order order { get; set; }
 }
