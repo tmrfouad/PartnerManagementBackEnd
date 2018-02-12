@@ -9,9 +9,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180211211958_MakeShippingDataIdPrimaryKey")]
+    partial class MakeShippingDataIdPrimaryKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +32,7 @@ namespace acscustomersgatebackend.Migrations
 
                     b.Property<int>("merchant_id");
 
-                    b.Property<int?>("shipping_dataId");
+                    b.Property<int>("shipping_dataId");
 
                     b.HasKey("merchant_order_id");
 
@@ -78,7 +79,8 @@ namespace acscustomersgatebackend.Migrations
                 {
                     b.HasOne("ShippingData", "shipping_data")
                         .WithMany()
-                        .HasForeignKey("shipping_dataId");
+                        .HasForeignKey("shipping_dataId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+
 public class ShippingData {
+    [Key]
     public int id { get; set; }
     public string apartment { get; set; }
     public string email { get; set; }
