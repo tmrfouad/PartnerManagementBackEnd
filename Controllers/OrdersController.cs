@@ -45,8 +45,9 @@ public class OrdersController : Controller
         _context.SaveChanges();
         MailHelper.sendMail(new MailData {  
                               Message = new MailMessageData(new [] {order.shipping_data.email}) 
-                              { Body = MailHelper.MessageBody(order.shipping_data.first_name+ " " + order.shipping_data.last_name ,
-                                 order.shipping_data.phone_number  )} , 
+                              { Body = MailHelper.MessageBody(order.shipping_data.first_name+ " " + 
+                                                              order.shipping_data.last_name ,
+                                                              order.shipping_data.phone_number  )} , 
                               SMTP = new SmtpData() });
 
         return new NoContentResult();

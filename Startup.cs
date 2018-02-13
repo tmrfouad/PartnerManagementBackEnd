@@ -43,6 +43,7 @@ namespace acs_customers_gate_back_end
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseStaticFiles();
             app.UseCors("AllowSpecificOrigin");
             app.UseMvc();
         }
