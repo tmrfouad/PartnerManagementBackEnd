@@ -12,4 +12,5 @@ public class Order {
     public object[] items { get; set; }
     public ShippingData shipping_data { get; set; }
     public int shipping_dataId { get; set; }
+    public bool MailSent { get; set; } = false;
 }

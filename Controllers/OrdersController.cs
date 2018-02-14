@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
+[EnableCors("AllowSpecificOrigin")]
 public class OrdersController : Controller
 {
     CustomersGateContext _context;
@@ -41,14 +44,49 @@ public class OrdersController : Controller
             BadRequest();
         }
 
-        _context.Orders.Add(order);
-        _context.SaveChanges();
-        MailHelper.sendMail(new MailData {  
-                              Message = new MailMessageData(new [] {order.shipping_data.email}) 
-                              { Body = MailHelper.MessageBody(order.shipping_data.first_name+ " " + 
-                                                              order.shipping_data.last_name ,
-                                                              order.shipping_data.phone_number  )} , 
-                              SMTP = new SmtpData() });
+        bool saved = false;
+
+        try
+        {
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+            saved = true;
+        }
+        catch (System.Exception)
+        {
+            saved = false;
+            throw;
+        }
+
+        if (!saved)
+            return new NoContentResult();
+
+        bool sent = false;
+        try
+        {
+            MailHelper.sendMail(new MailData
+            {
+                Message = new MailMessageData(new[] { order.shipping_data.email })
+                {
+                    Body = MailHelper.MessageBody(order.shipping_data.first_name + " " +
+                                                                  order.shipping_data.last_name,
+                                                                  order.shipping_data.phone_number)
+                },
+                SMTP = new SmtpData()
+            });
+            sent = true;
+        }
+        catch (Exception ex)
+        {
+            sent = false;
+            throw ex;
+        }
+
+        if (sent)
+        {
+            order.MailSent = true;
+            Put(order.merchant_order_id, order);
+        }
 
         return new NoContentResult();
     }
@@ -74,6 +112,7 @@ public class OrdersController : Controller
         orgItem.items = order.items;
         orgItem.merchant_id = order.merchant_id;
         orgItem.shipping_data = order.shipping_data;
+        orgItem.MailSent = order.MailSent;
 
         _context.Orders.Update(orgItem);
         _context.SaveChanges();
@@ -96,5 +135,5 @@ public class OrdersController : Controller
 
         return new NoContentResult();
     }
-        
+
 }

@@ -16,8 +16,8 @@ public static class MailHelper
             .Cast<SmtpDeliveryMethod>()
             .SingleOrDefault(o => o.ToString() == mail.SMTP.DeliveryMethod);
         client.UseDefaultCredentials = mail.SMTP.UseDefaultCredentials;
-
         client.Credentials = new NetworkCredential(mail.SMTP.UserName, mail.SMTP.Password);
+
         MailMessage msg = new MailMessage();
         foreach (var item in mail.Message.To)
         {
@@ -27,8 +27,8 @@ public static class MailHelper
         msg.Subject = mail.Message.Subject;
         msg.Body = mail.Message.Body;
         msg.IsBodyHtml = mail.Message.IsBodyHtml;
-        client.Send(msg);
 
+        client.Send(msg);
     }
 
     public static string MessageBody(string name, string phone)
