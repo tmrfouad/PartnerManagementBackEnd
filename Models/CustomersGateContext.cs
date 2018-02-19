@@ -1,11 +1,26 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using acscustomersgatebackend.Models.EntityTypeConfigurations;
 
-public class CustomersGateContext : DbContext
+namespace acscustomersgatebackend.Models
 {
-    public CustomersGateContext(DbContextOptions<CustomersGateContext> options) : base(options)
+    public class CustomersGateContext : DbContext
     {
-    }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<RFQ> RFQs { get; set; }
 
-    public DbSet<Order> Orders { get; set; }
+        public CustomersGateContext(DbContextOptions<CustomersGateContext> options) : base(options)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new RFQConfiguration());
+            base.OnModelCreating(modelBuilder);
+        }
+    }
 }

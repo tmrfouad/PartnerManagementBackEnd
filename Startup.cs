@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using acscustomersgatebackend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace acs_customers_gate_back_end
+namespace acscustomersgatebackend
 {
     public class Startup
     {
@@ -33,7 +35,9 @@ namespace acs_customers_gate_back_end
                     .AllowAnyHeader()
                     .AllowAnyMethod());
             });
-            services.AddMvc();
+            services.AddMvc(opt => {
+                opt.Filters.Add(typeof(AuthorizeAttribute));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

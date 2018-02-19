@@ -10,8 +10,8 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    [Migration("20180214121851_AddMailSentColumnToOrdersTable")]
-    partial class AddMailSentColumnToOrdersTable
+    [Migration("20180219072256_CreateRFQModel")]
+    partial class CreateRFQModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,50 @@ namespace acscustomersgatebackend.Migrations
                         .IsUnique();
 
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("RFQ", b =>
+                {
+                    b.Property<int>("RFQId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Address");
+
+                    b.Property<string>("CompanyArabicName");
+
+                    b.Property<string>("CompanyEnglishName");
+
+                    b.Property<string>("ContactPersonArabicName");
+
+                    b.Property<string>("ContactPersonEmail");
+
+                    b.Property<string>("ContactPersonEnglishName");
+
+                    b.Property<string>("ContactPersonMobile");
+
+                    b.Property<string>("ContactPersonPosition");
+
+                    b.Property<string>("Location");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<int>("RFQCode");
+
+                    b.Property<string>("SelectedBundle");
+
+                    b.Property<string>("Status");
+
+                    b.Property<DateTime>("SubmissionTime");
+
+                    b.Property<string>("TargetedProduct");
+
+                    b.Property<string>("UniversalIP");
+
+                    b.Property<string>("Website");
+
+                    b.HasKey("RFQId");
+
+                    b.ToTable("RFQs");
                 });
 
             modelBuilder.Entity("ShippingData", b =>

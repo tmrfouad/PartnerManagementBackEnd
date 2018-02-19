@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace acs_customers_gate_back_end
+namespace acscustomersgatebackend
 {
     public class Program
     {
