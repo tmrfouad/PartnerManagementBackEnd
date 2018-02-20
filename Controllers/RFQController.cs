@@ -94,7 +94,8 @@ public class RFQController : Controller
                 SubmissionTime = DateTime.Now,
                 UniversalIP = ""
             };
-            rfq.RFQActions = new List<RFQAction> { rfqAction };
+            rfq.RFQActions.Add(rfqAction);
+            
             Put(rfq.RFQId, rfq);
         }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace acscustomersgatebackend.Models
 {
@@ -25,6 +26,6 @@ namespace acscustomersgatebackend.Models
         public string UniversalIP { get; set; }
 
         // Navigation Properties
-        public IEnumerable<RFQAction> RFQActions { get; set; }
+        public DbSet<RFQAction> RFQActions { get; set; }
     }
 }
