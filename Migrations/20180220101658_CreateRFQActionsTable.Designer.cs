@@ -11,9 +11,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180220101658_CreateRFQActionsTable")]
+    partial class CreateRFQActionsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,7 +75,8 @@ namespace acscustomersgatebackend.Migrations
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<int>("RFQCode");
+                    b.Property<int>("RFQCode")
+                        .HasMaxLength(200);
 
                     b.Property<string>("SelectedBundle")
                         .IsRequired();
@@ -102,25 +104,21 @@ namespace acscustomersgatebackend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ActionCode")
-                        .IsRequired();
+                    b.Property<string>("ActionCode");
 
                     b.Property<DateTime>("ActionTime");
 
                     b.Property<int>("ActionType");
 
-                    b.Property<string>("Comments")
-                        .IsRequired();
+                    b.Property<string>("Comments");
 
-                    b.Property<string>("CompanyRepresentative")
-                        .IsRequired();
+                    b.Property<string>("CompanyRepresentative");
 
                     b.Property<int>("RFQId");
 
                     b.Property<DateTime>("SubmissionTime");
 
-                    b.Property<string>("UniversalIP")
-                        .IsRequired();
+                    b.Property<string>("UniversalIP");
 
                     b.HasKey("Id");
 

@@ -21,6 +21,8 @@ namespace acscustomersgatebackend.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new RFQConfiguration());
+            modelBuilder.ApplyConfiguration(new RFQActionConfiguration());
+
             base.OnModelCreating(modelBuilder);
         }
     }

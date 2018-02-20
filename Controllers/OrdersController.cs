@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using acscustomersgatebackend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 [Route("api/[controller]")]
 [EnableCors("AllowSpecificOrigin")]
 public class OrdersController : Controller
