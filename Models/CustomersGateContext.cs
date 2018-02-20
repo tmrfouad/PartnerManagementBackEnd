@@ -5,10 +5,11 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using acscustomersgatebackend.Models.EntityTypeConfigurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace acscustomersgatebackend.Models
 {
-    public class CustomersGateContext : DbContext
+    public class CustomersGateContext : IdentityDbContext
     {
         public DbSet<Order> Orders { get; set; }
         public DbSet<RFQ> RFQs { get; set; }

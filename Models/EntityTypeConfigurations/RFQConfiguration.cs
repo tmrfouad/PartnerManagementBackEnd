@@ -7,7 +7,7 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
     {
         public void Configure(EntityTypeBuilder<RFQ> entityTypeBuilder)
         {
-            entityTypeBuilder.Property(r => r.RFQCode).IsRequired();
+            entityTypeBuilder.Property(r => r.RFQCode).IsRequired().HasMaxLength(200);
             entityTypeBuilder.Property(r => r.CompanyEnglishName).IsRequired();
             entityTypeBuilder.Property(r => r.ContactPersonEnglishName).IsRequired();
             entityTypeBuilder.Property(r => r.ContactPersonEmail).IsRequired();
