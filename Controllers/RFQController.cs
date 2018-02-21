@@ -40,6 +40,7 @@ public class RFQController : Controller
 
     // POST api/RFQs
     [HttpPost]
+    [AllowAnonymous]
     public ActionResult Post([FromBody]RFQ rfq)
     {
         if (rfq == null)
@@ -51,6 +52,8 @@ public class RFQController : Controller
 
         try
         {
+            rfq.RFQCode = DateTime.Now.Ticks;
+
             _context.RFQs.Add(rfq);
             _context.SaveChanges();
             saved = true;

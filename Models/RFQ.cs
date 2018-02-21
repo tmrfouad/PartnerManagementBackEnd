@@ -7,7 +7,7 @@ namespace acscustomersgatebackend.Models
     public class RFQ
     {
         public int RFQId { get; set; }
-        public int RFQCode { get; set; }
+        public long RFQCode { get; set; }
         public string CompanyEnglishName { get; set; }
         public string ContactPersonEnglishName { get; set; }
         public string ContactPersonEmail { get; set; }

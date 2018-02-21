@@ -39,7 +39,8 @@ namespace acscustomersgatebackend
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins(Configuration["AllowedOrigin"])
+                    builder => builder// .WithOrigins(Configuration["AllowedOrigin"])
+                    .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod());
             });

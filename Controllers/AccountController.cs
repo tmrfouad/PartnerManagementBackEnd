@@ -50,12 +50,13 @@ public class AccountController : Controller
         var user = new IdentityUser
         {
             UserName = model.Email,
-            Email = model.Email
+            Email = model.Email,
         };
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (result.Succeeded)
         {
+            await _userManager.AddToRoleAsync(user, model.Role);
             await _signInManager.SignInAsync(user, false);
             return await GenerateJwtToken(model.Email, user);
         }
@@ -112,5 +113,7 @@ public class AccountController : Controller
         [Required]
         [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
         public string Password { get; set; }
+
+        public string Role { get; set; }
     }
 }
