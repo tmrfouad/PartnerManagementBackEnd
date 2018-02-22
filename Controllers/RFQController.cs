@@ -20,14 +20,14 @@ public class RFQController : Controller
         _context = context;
     }
 
-    // GET api/RFQs
+    // GET api/RFQ
     [HttpGet]
     public IEnumerable<RFQ> Get()
     {
         return _context.RFQs.ToList();
     }
 
-    // GET api/RFQs/5
+    // GET api/RFQ/5
     [HttpGet("{id}", Name = "GetRFQ")]
     [AllowAnonymous]
     public ActionResult Get(int id)
@@ -41,7 +41,7 @@ public class RFQController : Controller
         return new ObjectResult(item);
     }
 
-    // GET api/RFQs/5
+    // GET api/RFQ/Status/5
     [HttpGet("[action]/{id}", Name = "GetRFQStatus")]
     public async Task<ActionResult> Status(int id)
     {
@@ -73,7 +73,24 @@ public class RFQController : Controller
         return await Task.Run(() => new ObjectResult(rfqAction));
     }
 
-    // POST api/RFQs
+    // POST api/RFQ/AddStatus/5
+    [HttpPost("[action]/{id}", Name = "AddRFQAction")]
+    public async Task<ActionResult> AddStatus(int id, [FromBody]RFQAction action)
+    {
+        var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
+
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        item.RFQActions.Add(action);
+        _context.SaveChanges();
+
+        return await Task.Run(() => new NoContentResult());
+    }
+
+    // POST api/RFQ
     [HttpPost]
     [AllowAnonymous]
     public ActionResult Post([FromBody]RFQ rfq)
@@ -141,7 +158,7 @@ public class RFQController : Controller
         return new NoContentResult();
     }
 
-    // PUT api/RFQs/5
+    // PUT api/RFQ/5
     [HttpPut("{id}")]
     public ActionResult Put(int id, [FromBody]RFQ rfq)
     {
@@ -181,7 +198,7 @@ public class RFQController : Controller
         return new NoContentResult();
     }
 
-    // DELETE api/RFQs/5
+    // DELETE api/RFQ/5
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
