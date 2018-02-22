@@ -26,6 +26,6 @@ namespace acscustomersgatebackend.Models
         public string UniversalIP { get; set; }
 
         // Navigation Properties
-        public DbSet<RFQAction> RFQActions { get; set; }
+        public ICollection<RFQAction> RFQActions { get; set; }
     }
 }

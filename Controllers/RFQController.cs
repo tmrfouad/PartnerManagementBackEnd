@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using acscustomersgatebackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 [Authorize]
 [Route("api/[controller]")]
@@ -27,6 +29,7 @@ public class RFQController : Controller
 
     // GET api/RFQs/5
     [HttpGet("{id}", Name = "GetRFQ")]
+    [AllowAnonymous]
     public ActionResult Get(int id)
     {
         var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
@@ -36,6 +39,38 @@ public class RFQController : Controller
         }
 
         return new ObjectResult(item);
+    }
+
+    // GET api/RFQs/5
+    [HttpGet("[action]/{id}", Name = "GetRFQStatus")]
+    public async Task<ActionResult> Status(int id)
+    {
+        var item = _context.RFQs
+            .Where(o => o.RFQId == id)
+            .Include(r => r.RFQActions)
+            .FirstOrDefault();
+
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        var rfqAction = item.RFQActions
+            .Select(a => {
+                return new {
+                    a.ActionCode,
+                    a.ActionTime,
+                    a.ActionType,
+                    a.Comments,
+                    a.CompanyRepresentative,
+                    a.Id,
+                    a.RFQId,
+                    a.SubmissionTime,
+                    a.UniversalIP
+                };
+            }).SingleOrDefault(a => a.ActionTime == item.RFQActions.Max(a1 => a1.ActionTime));
+
+        return await Task.Run(() => new ObjectResult(rfqAction));
     }
 
     // POST api/RFQs
@@ -88,7 +123,8 @@ public class RFQController : Controller
 
         if (sent)
         {
-            RFQAction rfqAction = new RFQAction {
+            RFQAction rfqAction = new RFQAction
+            {
                 ActionCode = new Guid().ToString(),
                 ActionTime = DateTime.Now,
                 ActionType = ActionType.EmailMessage,
@@ -98,7 +134,7 @@ public class RFQController : Controller
                 UniversalIP = ""
             };
             rfq.RFQActions.Add(rfqAction);
-            
+
             Put(rfq.RFQId, rfq);
         }
 
