@@ -224,7 +224,7 @@ public class RFQController : Controller
     [HttpPost("[action]/{id}", Name = "AddRFQAction")]
     public async Task<ActionResult> AddStatus(int id, [FromBody]RFQAction action)
     {
-        var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
+        var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).FirstOrDefault();
 
         if (item == null)
         {
