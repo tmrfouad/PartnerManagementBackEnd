@@ -31,6 +31,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<object> Login([FromBody] LoginDto model)
     {
         var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
@@ -39,6 +40,7 @@ public class AccountController : Controller
         {
             var appUser = _userManager.Users.SingleOrDefault(r => r.Email == model.Email);
             return await GenerateJwtToken(model.Email, appUser);
+            
         }
 
         throw new ApplicationException("INVALID_LOGIN_ATTEMPT");

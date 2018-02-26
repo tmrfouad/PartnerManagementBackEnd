@@ -7,6 +7,9 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
     {
         public void Configure(EntityTypeBuilder<RFQ> entityTypeBuilder)
         {
+            entityTypeBuilder.HasIndex(r => r.RFQCode).IsUnique();
+            entityTypeBuilder.HasIndex(r => r.ContactPersonEmail).IsUnique();
+
             entityTypeBuilder.Property(r => r.RFQCode).IsRequired();
             entityTypeBuilder.Property(r => r.CompanyEnglishName).IsRequired();
             entityTypeBuilder.Property(r => r.ContactPersonEnglishName).IsRequired();
