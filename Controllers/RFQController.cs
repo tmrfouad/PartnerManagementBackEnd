@@ -56,7 +56,7 @@ public class RFQController : Controller
 
         try
         {
-            rfq.RFQCode = DateTime.Now.Ticks;
+            rfq.RFQCode = DateTime.Now.Ticks.ToString();
 
             _context.RFQs.Add(rfq);
             _context.SaveChanges();
@@ -230,6 +230,8 @@ public class RFQController : Controller
         {
             return NotFound();
         }
+
+        action.ActionCode = DateTime.Now.Ticks.ToString();
 
         item.RFQActions.Add(action);
         _context.SaveChanges();

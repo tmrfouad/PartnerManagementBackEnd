@@ -11,9 +11,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180226104903_RemoveUniqueFromRFQCode")]
+    partial class RemoveUniqueFromRFQCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,8 +75,7 @@ namespace acscustomersgatebackend.Migrations
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<string>("RFQCode")
-                        .IsRequired();
+                    b.Property<long>("RFQCode");
 
                     b.Property<string>("SelectedBundle")
                         .IsRequired();
@@ -96,9 +96,6 @@ namespace acscustomersgatebackend.Migrations
                     b.HasKey("RFQId");
 
                     b.HasIndex("ContactPersonEmail")
-                        .IsUnique();
-
-                    b.HasIndex("RFQCode")
                         .IsUnique();
 
                     b.ToTable("RFQs");
