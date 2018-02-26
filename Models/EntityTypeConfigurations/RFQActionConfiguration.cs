@@ -7,6 +7,8 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
     {
         public void Configure(EntityTypeBuilder<RFQAction> entityTypeBuilder)
         {
+            entityTypeBuilder.HasIndex(a => a.ActionCode).IsUnique();
+
             entityTypeBuilder.Property(r => r.ActionCode).IsRequired();
             entityTypeBuilder.Property(r => r.ActionTime).IsRequired();
             entityTypeBuilder.Property(r => r.ActionType).IsRequired();

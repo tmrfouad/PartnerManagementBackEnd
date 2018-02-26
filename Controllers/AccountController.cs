@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 [Route("[controller]/[action]")]
+[Authorize]
 public class AccountController : Controller
 {
     private readonly SignInManager<IdentityUser> _signInManager;
@@ -66,7 +67,6 @@ public class AccountController : Controller
         throw new ApplicationException("UNKNOWN_ERROR");
     }
 
-    [Authorize]
     [HttpGet]
     public async Task<object> Protected()
     {

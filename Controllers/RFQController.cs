@@ -20,6 +20,7 @@ public class RFQController : Controller
         _context = context;
     }
 
+    #region RFQs
     // GET api/RFQ
     [HttpGet]
     public IEnumerable<RFQ> Get()
@@ -39,74 +40,6 @@ public class RFQController : Controller
         }
 
         return new ObjectResult(item);
-    }
-
-    // GET api/RFQ/Status/5
-    [HttpGet("[action]/{id}", Name = "GetRFQStatus")]
-    public async Task<ActionResult> Status(int id)
-    {
-        var item = _context.RFQs
-            .Where(o => o.RFQId == id)
-            .Include(r => r.RFQActions)
-            .FirstOrDefault();
-
-        if (item == null)
-        {
-            return NotFound();
-        }
-
-        var rfqAction = item.RFQActions
-            .Select(a => {
-                return new {
-                    a.ActionCode,
-                    a.ActionTime,
-                    a.ActionType,
-                    a.Comments,
-                    a.CompanyRepresentative,
-                    a.Id,
-                    a.RFQId,
-                    a.SubmissionTime,
-                    a.UniversalIP
-                };
-            }).SingleOrDefault(a => a.ActionTime == item.RFQActions.Max(a1 => a1.ActionTime));
-
-        return await Task.Run(() => new ObjectResult(rfqAction));
-    }
-
-    // GET api/RFQ/Status/5
-    [HttpGet("[action]/{id}", Name = "GetRFQActions")]
-    public async Task<ActionResult> Actions(int id)
-    {
-        var item = _context.RFQs
-            .Where(o => o.RFQId == id)
-            .Include(r => r.RFQActions)
-            .FirstOrDefault();
-
-        if (item == null)
-        {
-            return NotFound();
-        }
-
-        var rfqActions = item.RFQActions;
-
-        return await Task.Run(() => new ObjectResult(rfqActions));
-    }
-
-    // POST api/RFQ/AddStatus/5
-    [HttpPost("[action]/{id}", Name = "AddRFQAction")]
-    public async Task<ActionResult> AddStatus(int id, [FromBody]RFQAction action)
-    {
-        var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
-
-        if (item == null)
-        {
-            return NotFound();
-        }
-
-        item.RFQActions.Add(action);
-        _context.SaveChanges();
-
-        return await Task.Run(() => new NoContentResult());
     }
 
     // POST api/RFQ
@@ -232,5 +165,76 @@ public class RFQController : Controller
 
         return new NoContentResult();
     }
+    #endregion
+    #region Actions
+    // GET api/RFQ/Status/5
+    [HttpGet("[action]/{id}", Name = "GetRFQStatus")]
+    public async Task<ActionResult> Status(int id)
+    {
+        var item = _context.RFQs
+            .Where(o => o.RFQId == id)
+            .Include(r => r.RFQActions)
+            .FirstOrDefault();
 
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        var rfqAction = item.RFQActions
+            .Select(a =>
+            {
+                return new
+                {
+                    a.ActionCode,
+                    a.ActionTime,
+                    a.ActionType,
+                    a.Comments,
+                    a.CompanyRepresentative,
+                    a.Id,
+                    a.RFQId,
+                    a.SubmissionTime,
+                    a.UniversalIP
+                };
+            }).SingleOrDefault(a => a.ActionTime == item.RFQActions.Max(a1 => a1.ActionTime));
+
+        return await Task.Run(() => new ObjectResult(rfqAction));
+    }
+
+    // GET api/RFQ/Actions/5
+    [HttpGet("[action]/{id}", Name = "GetRFQActions")]
+    public async Task<ActionResult> Actions(int id)
+    {
+        var item = _context.RFQs
+            .Where(o => o.RFQId == id)
+            .Include(r => r.RFQActions)
+            .FirstOrDefault();
+
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        var rfqActions = item.RFQActions;
+
+        return await Task.Run(() => new ObjectResult(rfqActions));
+    }
+
+    // POST api/RFQ/AddStatus/5
+    [HttpPost("[action]/{id}", Name = "AddRFQAction")]
+    public async Task<ActionResult> AddStatus(int id, [FromBody]RFQAction action)
+    {
+        var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
+
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        item.RFQActions.Add(action);
+        _context.SaveChanges();
+
+        return await Task.Run(() => new NoContentResult());
+    }
+    #endregion
 }
