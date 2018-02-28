@@ -252,5 +252,32 @@ public class RFQController : Controller
 
         return await Task.Run(() => new NoContentResult());
     }
+
+    // POST api/RFQ/UpdateStatus/5/1
+    [HttpPost("[action]/{id}/{actionId}", Name = "UpdateRFQAction")]
+    public async Task<ActionResult> UpdateStatus(int id, int actionId, [FromBody]RFQAction action)
+    {
+        var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).FirstOrDefault();
+
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        var orgAction = item.RFQActions.Where(a => a.Id == actionId).FirstOrDefault();
+
+        if (orgAction == null)
+        {
+            return NotFound();
+        }
+
+        orgAction.ActionType = action.ActionType;
+        orgAction.CompanyRepresentative = action.CompanyRepresentative;
+        orgAction.Comments = action.Comments;
+
+        _context.SaveChanges();
+
+        return await Task.Run(() => new NoContentResult());
+    }
     #endregion
 }
