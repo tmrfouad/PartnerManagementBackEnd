@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 [Authorize]
 [Route("api/[controller]")]
-[EnableCors("AllowSpecificOrigin")]
+[EnableCors("AllowAnyOrigin")]
 public class RFQController : Controller
 {
     CustomersGateContext _context;
@@ -30,7 +30,6 @@ public class RFQController : Controller
 
     // GET api/RFQ/5
     [HttpGet("{id}", Name = "GetRFQ")]
-    [AllowAnonymous]
     public ActionResult Get(int id)
     {
         var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
@@ -107,7 +106,7 @@ public class RFQController : Controller
             Put(rfq.RFQId, rfq);
         }
 
-        return new NoContentResult();
+        return new ObjectResult(rfq);
     }
 
     // PUT api/RFQ/5
@@ -147,7 +146,7 @@ public class RFQController : Controller
         _context.RFQs.Update(orgItem);
         _context.SaveChanges();
 
-        return new NoContentResult();
+        return new ObjectResult(orgItem);
     }
 
     // DELETE api/RFQ/5
@@ -203,7 +202,7 @@ public class RFQController : Controller
 
     // GET api/RFQ/Actions/5
     [HttpGet("[action]/{id}", Name = "GetRFQActions")]
-    public async Task<ActionResult> Actions(int id)
+    public async Task<IEnumerable<Object>> Actions(int id)
     {
         var item = _context.RFQs
             .Where(o => o.RFQId == id)
@@ -212,12 +211,27 @@ public class RFQController : Controller
 
         if (item == null)
         {
-            return NotFound();
+            return null;
         }
 
-        var rfqActions = item.RFQActions;
+        var rfqActions = item.RFQActions
+            .Select(a =>
+            {
+                return new
+                {
+                    a.ActionCode,
+                    a.ActionTime,
+                    a.ActionType,
+                    a.Comments,
+                    a.CompanyRepresentative,
+                    a.Id,
+                    a.RFQId,
+                    a.SubmissionTime,
+                    a.UniversalIP
+                };
+            });
 
-        return await Task.Run(() => new ObjectResult(rfqActions));
+        return await Task.Run(() => rfqActions);
     }
 
     // POST api/RFQ/AddStatus/5

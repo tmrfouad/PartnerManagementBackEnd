@@ -38,7 +38,7 @@ namespace acscustomersgatebackend
             // ======== Cross-origin resource sharing =========
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
+                options.AddPolicy("AllowAnyOrigin",
                     builder => builder// .WithOrigins(Configuration["AllowedOrigin"])
                     .AllowAnyOrigin()
                     .AllowAnyHeader()
@@ -87,7 +87,7 @@ namespace acscustomersgatebackend
 
             app.UseStaticFiles();
             app.UseAuthentication();
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors("AllowAnyOrigin");
             app.UseMvc();
 
             // ===== Create tables ======

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 [Authorize]
 [Route("api/[controller]")]
-[EnableCors("AllowSpecificOrigin")]
+[EnableCors("AllowAnyOrigin")]
 public class OrdersController : Controller
 {
     CustomersGateContext _context;
