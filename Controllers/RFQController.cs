@@ -134,13 +134,11 @@ public class RFQController : Controller
         orgItem.ContactPersonPosition = rfq.ContactPersonPosition;
         orgItem.Location = rfq.Location;
         orgItem.PhoneNumber = rfq.PhoneNumber;
-        orgItem.RFQActions = rfq.RFQActions;
-        orgItem.RFQCode = rfq.RFQCode;
         orgItem.SelectedBundle = rfq.SelectedBundle;
         orgItem.Status = rfq.Status;
         orgItem.SubmissionTime = DateTime.Now;
         orgItem.TargetedProduct = rfq.TargetedProduct;
-        orgItem.UniversalIP = "";
+        orgItem.UniversalIP = rfq.UniversalIP;
         orgItem.Website = rfq.Website;
 
         _context.RFQs.Update(orgItem);
