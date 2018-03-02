@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-[Authorize]
+// [Authorize]
 [Route("api/[controller]")]
 [EnableCors("AllowAnyOrigin")]
 public class RFQController : Controller
@@ -23,6 +23,7 @@ public class RFQController : Controller
     #region RFQs
     // GET api/RFQ
     [HttpGet]
+    [AllowAnonymous]
     public IEnumerable<RFQ> Get()
     {
         return _context.RFQs.ToList();
