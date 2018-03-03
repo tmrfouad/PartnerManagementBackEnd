@@ -20,31 +20,6 @@ namespace acscustomersgatebackend.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("acscustomersgatebackend.Models.Order", b =>
-                {
-                    b.Property<int>("merchant_order_id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("MailSent");
-
-                    b.Property<float>("amount_cents");
-
-                    b.Property<string>("currency");
-
-                    b.Property<bool>("delivery_needed");
-
-                    b.Property<int>("merchant_id");
-
-                    b.Property<int>("shipping_dataId");
-
-                    b.HasKey("merchant_order_id");
-
-                    b.HasIndex("shipping_dataId")
-                        .IsUnique();
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("acscustomersgatebackend.Models.RFQ", b =>
                 {
                     b.Property<int>("RFQId")
@@ -137,40 +112,6 @@ namespace acscustomersgatebackend.Migrations
                     b.HasIndex("RFQId");
 
                     b.ToTable("RFQAction");
-                });
-
-            modelBuilder.Entity("acscustomersgatebackend.Models.ShippingData", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("apartment");
-
-                    b.Property<string>("building");
-
-                    b.Property<string>("city");
-
-                    b.Property<string>("country");
-
-                    b.Property<string>("email");
-
-                    b.Property<string>("first_name");
-
-                    b.Property<string>("floor");
-
-                    b.Property<string>("last_name");
-
-                    b.Property<string>("phone_number");
-
-                    b.Property<string>("postal_code");
-
-                    b.Property<string>("state");
-
-                    b.Property<string>("street");
-
-                    b.HasKey("id");
-
-                    b.ToTable("ShippingData");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -330,14 +271,6 @@ namespace acscustomersgatebackend.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("acscustomersgatebackend.Models.Order", b =>
-                {
-                    b.HasOne("acscustomersgatebackend.Models.ShippingData", "shipping_data")
-                        .WithOne("order")
-                        .HasForeignKey("acscustomersgatebackend.Models.Order", "shipping_dataId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("acscustomersgatebackend.Models.RFQAction", b =>

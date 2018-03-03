@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace acscustomersgatebackend.Migrations
 {
-    public partial class CreateAuthTables : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -46,6 +46,35 @@ namespace acscustomersgatebackend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RFQs",
+                columns: table => new
+                {
+                    RFQId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Address = table.Column<string>(nullable: true),
+                    CompanyArabicName = table.Column<string>(nullable: true),
+                    CompanyEnglishName = table.Column<string>(nullable: false),
+                    ContactPersonArabicName = table.Column<string>(nullable: true),
+                    ContactPersonEmail = table.Column<string>(nullable: false),
+                    ContactPersonEnglishName = table.Column<string>(nullable: false),
+                    ContactPersonMobile = table.Column<string>(nullable: false),
+                    ContactPersonPosition = table.Column<string>(nullable: true),
+                    Location = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    RFQCode = table.Column<string>(nullable: false),
+                    SelectedBundle = table.Column<string>(nullable: false),
+                    Status = table.Column<string>(nullable: false),
+                    SubmissionTime = table.Column<DateTime>(nullable: false),
+                    TargetedProduct = table.Column<string>(nullable: false),
+                    UniversalIP = table.Column<string>(nullable: false),
+                    Website = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RFQs", x => x.RFQId);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +183,32 @@ namespace acscustomersgatebackend.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RFQAction",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ActionCode = table.Column<string>(nullable: false),
+                    ActionTime = table.Column<DateTime>(nullable: false),
+                    ActionType = table.Column<int>(nullable: false),
+                    Comments = table.Column<string>(nullable: false),
+                    CompanyRepresentative = table.Column<string>(nullable: false),
+                    RFQId = table.Column<int>(nullable: false),
+                    SubmissionTime = table.Column<DateTime>(nullable: false),
+                    UniversalIP = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RFQAction", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RFQAction_RFQs_RFQId",
+                        column: x => x.RFQId,
+                        principalTable: "RFQs",
+                        principalColumn: "RFQId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -192,6 +247,29 @@ namespace acscustomersgatebackend.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RFQAction_ActionCode",
+                table: "RFQAction",
+                column: "ActionCode",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RFQAction_RFQId",
+                table: "RFQAction",
+                column: "RFQId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RFQs_ContactPersonEmail",
+                table: "RFQs",
+                column: "ContactPersonEmail",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RFQs_RFQCode",
+                table: "RFQs",
+                column: "RFQCode",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,10 +290,16 @@ namespace acscustomersgatebackend.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "RFQAction");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "RFQs");
         }
     }
 }

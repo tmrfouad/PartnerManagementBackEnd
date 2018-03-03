@@ -90,8 +90,8 @@ namespace acscustomersgatebackend
             app.UseCors("AllowAnyOrigin");
             app.UseMvc();
 
-            // ===== Create tables ======
-            dbContext.Database.EnsureCreated();
+            // // ===== Create tables ======
+            // dbContext.Database.EnsureCreated();
         }
     }
 }

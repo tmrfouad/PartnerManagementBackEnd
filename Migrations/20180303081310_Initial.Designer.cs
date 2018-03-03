@@ -11,8 +11,8 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    [Migration("20180220101658_CreateRFQActionsTable")]
-    partial class CreateRFQActionsTable
+    [Migration("20180303081310_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,31 +20,6 @@ namespace acscustomersgatebackend.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("acscustomersgatebackend.Models.Order", b =>
-                {
-                    b.Property<int>("merchant_order_id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("MailSent");
-
-                    b.Property<float>("amount_cents");
-
-                    b.Property<string>("currency");
-
-                    b.Property<bool>("delivery_needed");
-
-                    b.Property<int>("merchant_id");
-
-                    b.Property<int>("shipping_dataId");
-
-                    b.HasKey("merchant_order_id");
-
-                    b.HasIndex("shipping_dataId")
-                        .IsUnique();
-
-                    b.ToTable("Orders");
-                });
 
             modelBuilder.Entity("acscustomersgatebackend.Models.RFQ", b =>
                 {
@@ -75,8 +50,8 @@ namespace acscustomersgatebackend.Migrations
 
                     b.Property<string>("PhoneNumber");
 
-                    b.Property<int>("RFQCode")
-                        .HasMaxLength(200);
+                    b.Property<string>("RFQCode")
+                        .IsRequired();
 
                     b.Property<string>("SelectedBundle")
                         .IsRequired();
@@ -96,6 +71,12 @@ namespace acscustomersgatebackend.Migrations
 
                     b.HasKey("RFQId");
 
+                    b.HasIndex("ContactPersonEmail")
+                        .IsUnique();
+
+                    b.HasIndex("RFQCode")
+                        .IsUnique();
+
                     b.ToTable("RFQs");
                 });
 
@@ -104,61 +85,34 @@ namespace acscustomersgatebackend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ActionCode");
+                    b.Property<string>("ActionCode")
+                        .IsRequired();
 
                     b.Property<DateTime>("ActionTime");
 
                     b.Property<int>("ActionType");
 
-                    b.Property<string>("Comments");
+                    b.Property<string>("Comments")
+                        .IsRequired();
 
-                    b.Property<string>("CompanyRepresentative");
+                    b.Property<string>("CompanyRepresentative")
+                        .IsRequired();
 
                     b.Property<int>("RFQId");
 
                     b.Property<DateTime>("SubmissionTime");
 
-                    b.Property<string>("UniversalIP");
+                    b.Property<string>("UniversalIP")
+                        .IsRequired();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ActionCode")
+                        .IsUnique();
 
                     b.HasIndex("RFQId");
 
                     b.ToTable("RFQAction");
-                });
-
-            modelBuilder.Entity("acscustomersgatebackend.Models.ShippingData", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("apartment");
-
-                    b.Property<string>("building");
-
-                    b.Property<string>("city");
-
-                    b.Property<string>("country");
-
-                    b.Property<string>("email");
-
-                    b.Property<string>("first_name");
-
-                    b.Property<string>("floor");
-
-                    b.Property<string>("last_name");
-
-                    b.Property<string>("phone_number");
-
-                    b.Property<string>("postal_code");
-
-                    b.Property<string>("state");
-
-                    b.Property<string>("street");
-
-                    b.HasKey("id");
-
-                    b.ToTable("ShippingData");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -318,14 +272,6 @@ namespace acscustomersgatebackend.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("acscustomersgatebackend.Models.Order", b =>
-                {
-                    b.HasOne("acscustomersgatebackend.Models.ShippingData", "shipping_data")
-                        .WithOne("order")
-                        .HasForeignKey("acscustomersgatebackend.Models.Order", "shipping_dataId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("acscustomersgatebackend.Models.RFQAction", b =>
