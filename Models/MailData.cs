@@ -18,10 +18,10 @@ public class MailMessageData
 
 public class SmtpData
 {
-    public string Domain { get; set; } = "box756.bluehost.com" ;
-    public int Port { get; set; } = 465;
-    public bool EnableSsl { get; set; } = true ;
-    public int Timeout { get; set; } = 3600000 ;
+    public string Domain { get; set; } = "mail.acs-me.com" ;
+    public int Port { get; set; } = 26;
+    public bool EnableSsl { get; set; } = false;
+    public int Timeout { get; set; } = 3600000;
     public string DeliveryMethod { get; set; }
     public bool UseDefaultCredentials { get; set; } = false;
     public string UserName { get; set; } = "tabuhmead@acs-me.com" ;

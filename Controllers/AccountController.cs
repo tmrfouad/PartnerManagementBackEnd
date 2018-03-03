@@ -48,6 +48,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<object> Register([FromBody] RegisterDto model)
     {
         var user = new IdentityUser
@@ -59,7 +60,6 @@ public class AccountController : Controller
 
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(user, model.Role);
             await _signInManager.SignInAsync(user, false);
             return await GenerateJwtToken(model.Email, user);
         }
@@ -115,7 +115,5 @@ public class AccountController : Controller
         [Required]
         [StringLength(100, ErrorMessage = "PASSWORD_MIN_LENGTH", MinimumLength = 6)]
         public string Password { get; set; }
-
-        public string Role { get; set; }
     }
 }

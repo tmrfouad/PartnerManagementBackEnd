@@ -57,6 +57,7 @@ public class RFQController : Controller
         try
         {
             rfq.RFQCode = DateTime.Now.Ticks.ToString();
+            rfq.SubmissionTime = DateTime.Now;
 
             _context.RFQs.Add(rfq);
             _context.SaveChanges();
@@ -94,20 +95,20 @@ public class RFQController : Controller
         {
             RFQAction rfqAction = new RFQAction
             {
-                ActionCode = new Guid().ToString(),
+                ActionCode = DateTime.Now.Ticks.ToString(),
                 ActionTime = DateTime.Now,
                 ActionType = ActionType.EmailMessage,
-                Comments = "",
-                CompanyRepresentative = "",
+                Comments = "Automated Email",
+                CompanyRepresentative = "Company Representative",
                 SubmissionTime = DateTime.Now,
-                UniversalIP = ""
+                UniversalIP = rfq.UniversalIP
             };
-            rfq.RFQActions.Add(rfqAction);
-
-            Put(rfq.RFQId, rfq);
+            var newRfq = _context.RFQs.Where(r => r.RFQId == rfq.RFQId).Include(r => r.RFQActions).SingleOrDefault();
+            newRfq.RFQActions.Add(rfqAction);
+            _context.SaveChanges();
         }
 
-        return new ObjectResult(rfq);
+        return new NoContentResult();
     }
 
     // PUT api/RFQ/5
@@ -245,6 +246,8 @@ public class RFQController : Controller
         }
 
         action.ActionCode = DateTime.Now.Ticks.ToString();
+        action.ActionTime = DateTime.Now;
+        action.SubmissionTime = DateTime.Now;
 
         item.RFQActions.Add(action);
         _context.SaveChanges();
@@ -273,6 +276,9 @@ public class RFQController : Controller
         orgAction.ActionType = action.ActionType;
         orgAction.CompanyRepresentative = action.CompanyRepresentative;
         orgAction.Comments = action.Comments;
+        orgAction.UniversalIP = action.UniversalIP;
+
+        orgAction.SubmissionTime = DateTime.Now;
 
         _context.SaveChanges();
 

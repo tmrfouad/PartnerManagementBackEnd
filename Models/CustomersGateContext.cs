@@ -11,7 +11,6 @@ namespace acscustomersgatebackend.Models
 {
     public class CustomersGateContext : IdentityDbContext
     {
-        public DbSet<Order> Orders { get; set; }
         public DbSet<RFQ> RFQs { get; set; }
 
         public CustomersGateContext(DbContextOptions<CustomersGateContext> options) : base(options)
