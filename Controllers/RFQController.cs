@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-// [Authorize]
+[Authorize]
 [Route("api/[controller]")]
 [EnableCors("AllowAnyOrigin")]
 public class RFQController : Controller
@@ -165,6 +165,7 @@ public class RFQController : Controller
         return new NoContentResult();
     }
     #endregion
+    
     #region Actions
     // GET api/RFQ/Status/5
     [HttpGet("[action]/{id}", Name = "GetRFQStatus")]
