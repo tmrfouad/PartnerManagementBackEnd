@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 [Authorize]
-[Route("api/[controller]")]
+[Route("[controller]/[action]")]
 [EnableCors("AllowAnyOrigin")]
 public class RFQController : Controller
 {
@@ -21,15 +21,14 @@ public class RFQController : Controller
     }
 
     #region RFQs
-    // GET api/RFQ
+    // GET RFQ/Get
     [HttpGet]
-    [AllowAnonymous]
     public IEnumerable<RFQ> Get()
     {
         return _context.RFQs.ToList();
     }
 
-    // GET api/RFQ/5
+    // GET RFQ/Get/5
     [HttpGet("{id}", Name = "GetRFQ")]
     public ActionResult Get(int id)
     {
@@ -42,7 +41,7 @@ public class RFQController : Controller
         return new ObjectResult(item);
     }
 
-    // POST api/RFQ
+    // POST RFQ/Post
     [HttpPost]
     [AllowAnonymous]
     public ActionResult Post([FromBody]RFQ rfq)
@@ -111,7 +110,7 @@ public class RFQController : Controller
         return new NoContentResult();
     }
 
-    // PUT api/RFQ/5
+    // PUT RFQ/Put/5
     [HttpPut("{id}")]
     public ActionResult Put(int id, [FromBody]RFQ rfq)
     {
@@ -149,7 +148,7 @@ public class RFQController : Controller
         return new ObjectResult(orgItem);
     }
 
-    // DELETE api/RFQ/5
+    // DELETE RFQ/Delete/5
     [HttpDelete("{id}")]
     public ActionResult Delete(int id)
     {
@@ -167,8 +166,8 @@ public class RFQController : Controller
     #endregion
     
     #region Actions
-    // GET api/RFQ/Status/5
-    [HttpGet("[action]/{id}", Name = "GetRFQStatus")]
+    // GET RFQ/Status/5
+    [HttpGet("{id}", Name = "GetRFQStatus")]
     public async Task<ActionResult> Status(int id)
     {
         var item = _context.RFQs
@@ -201,8 +200,8 @@ public class RFQController : Controller
         return await Task.Run(() => new ObjectResult(rfqAction));
     }
 
-    // GET api/RFQ/Actions/5
-    [HttpGet("[action]/{id}", Name = "GetRFQActions")]
+    // GET RFQ/Actions/5
+    [HttpGet("{id}", Name = "GetRFQActions")]
     public async Task<IEnumerable<Object>> Actions(int id)
     {
         var item = _context.RFQs
@@ -235,8 +234,8 @@ public class RFQController : Controller
         return await Task.Run(() => rfqActions);
     }
 
-    // POST api/RFQ/AddStatus/5
-    [HttpPost("[action]/{id}", Name = "AddRFQAction")]
+    // POST RFQ/AddStatus/5
+    [HttpPost("{id}", Name = "AddRFQAction")]
     public async Task<ActionResult> AddStatus(int id, [FromBody]RFQAction action)
     {
         var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).FirstOrDefault();
@@ -256,8 +255,8 @@ public class RFQController : Controller
         return await Task.Run(() => new NoContentResult());
     }
 
-    // POST api/RFQ/UpdateStatus/5/1
-    [HttpPost("[action]/{id}/{actionId}", Name = "UpdateRFQAction")]
+    // POST RFQ/UpdateStatus/5/1
+    [HttpPost("{id}/{actionId}", Name = "UpdateRFQAction")]
     public async Task<ActionResult> UpdateStatus(int id, int actionId, [FromBody]RFQAction action)
     {
         var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).FirstOrDefault();
