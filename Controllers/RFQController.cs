@@ -20,6 +20,12 @@ public class RFQController : Controller
         _context = context;
     }
 
+    [AllowAnonymous]
+    public string test()
+    {
+        return "API is working...";
+    }
+
     #region RFQs
     // GET RFQ/Get
     [HttpGet]
@@ -164,7 +170,7 @@ public class RFQController : Controller
         return new NoContentResult();
     }
     #endregion
-    
+
     #region Actions
     // GET RFQ/Status/5
     [HttpGet("{id}", Name = "GetRFQStatus")]
