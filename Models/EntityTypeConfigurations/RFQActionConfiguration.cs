@@ -10,11 +10,15 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
             entityTypeBuilder.HasIndex(a => a.ActionCode).IsUnique();
 
             entityTypeBuilder.Property(r => r.ActionCode).IsRequired();
-            entityTypeBuilder.Property(r => r.ActionTime).IsRequired();
+            entityTypeBuilder.Property(r => r.ActionTime)
+                .IsRequired()
+                .HasColumnType("datetime");
             entityTypeBuilder.Property(r => r.ActionType).IsRequired();
             entityTypeBuilder.Property(r => r.CompanyRepresentative).IsRequired();
             entityTypeBuilder.Property(r => r.Comments).IsRequired();
-            entityTypeBuilder.Property(r => r.SubmissionTime).IsRequired();
+            entityTypeBuilder.Property(r => r.SubmissionTime)
+                .IsRequired()
+                .HasColumnType("datetime");
             entityTypeBuilder.Property(r => r.UniversalIP).IsRequired();
 
             entityTypeBuilder

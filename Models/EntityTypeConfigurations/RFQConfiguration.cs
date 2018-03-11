@@ -18,7 +18,9 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
             entityTypeBuilder.Property(r => r.TargetedProduct).IsRequired();
             entityTypeBuilder.Property(r => r.SelectedBundle).IsRequired();
             entityTypeBuilder.Property(r => r.Status).IsRequired();
-            entityTypeBuilder.Property(r => r.SubmissionTime).IsRequired();
+            entityTypeBuilder.Property(r => r.SubmissionTime)
+                .IsRequired()
+                .HasColumnType("datetime");
             entityTypeBuilder.Property(r => r.UniversalIP).IsRequired();
         }
     }

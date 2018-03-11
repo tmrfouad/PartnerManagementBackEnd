@@ -11,9 +11,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180311130438_ChangeDateTime2ColumnsToDateTime")]
+    partial class ChangeDateTime2ColumnsToDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
