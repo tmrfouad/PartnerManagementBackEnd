@@ -8,6 +8,7 @@ namespace acscustomersgatebackend.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("UPDATE RFQs SET Status = '0' WHERE Status = 'New'");
             migrationBuilder.AlterColumn<int>(
                 name: "Status",
                 table: "RFQs",
@@ -22,6 +23,7 @@ namespace acscustomersgatebackend.Migrations
                 table: "RFQs",
                 nullable: false,
                 oldClrType: typeof(int));
+            migrationBuilder.Sql("UPDATE RFQs SET Status = 'New' WHERE Status = '0'");
         }
     }
 }
