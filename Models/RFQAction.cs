@@ -7,7 +7,7 @@ namespace acscustomersgatebackend.Models
         public int Id { get; set; }
         public string ActionCode { get; set; }
         public DateTime ActionTime { get; set; }
-        public ActionType ActionType { get; set; }
+        public Enumerations.ActionType ActionType { get; set; }
         public string CompanyRepresentative { get; set; }
         public string Comments { get; set; }
         public int RFQId { get; set; }
