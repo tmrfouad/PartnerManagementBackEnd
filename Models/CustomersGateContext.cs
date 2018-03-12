@@ -12,6 +12,7 @@ namespace acscustomersgatebackend.Models
     public class CustomersGateContext : IdentityDbContext
     {
         public DbSet<RFQ> RFQs { get; set; }
+        public DbSet<Representative> Representatives { get; set; }
 
         public CustomersGateContext(DbContextOptions<CustomersGateContext> options) : base(options)
         {
@@ -21,7 +22,7 @@ namespace acscustomersgatebackend.Models
         {
             modelBuilder.ApplyConfiguration(new RFQConfiguration());
             modelBuilder.ApplyConfiguration(new RFQActionConfiguration());
-
+            modelBuilder.ApplyConfiguration(new RepresentativeConfigration());
             base.OnModelCreating(modelBuilder);
         }
     }
