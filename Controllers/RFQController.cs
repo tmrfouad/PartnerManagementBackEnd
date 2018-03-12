@@ -77,42 +77,45 @@ public class RFQController : Controller
         if (!saved)
             return new NoContentResult();
 
-        bool sent = false;
-        try
+        if (rfq.SendEmail)
         {
-            MailHelper.sendMail(new MailData
+            bool sent = false;
+            try
             {
-                Message = new MailMessageData(new[] { rfq.ContactPersonEmail })
+                MailHelper.sendMail(new MailData
                 {
-                    Body = MailHelper.MessageBody(rfq.ContactPersonEnglishName, rfq.ContactPersonMobile)
-                },
-                SMTP = new SmtpData()
-            });
-            sent = true;
-        }
-        catch (Exception ex)
-        {
-            sent = false;
-            throw ex;
-        }
-
-        if (sent)
-        {
-            RFQAction rfqAction = new RFQAction
+                    Message = new MailMessageData(new[] { rfq.ContactPersonEmail })
+                    {
+                        Body = MailHelper.MessageBody(rfq.ContactPersonEnglishName, rfq.ContactPersonMobile)
+                    },
+                    SMTP = new SmtpData()
+                });
+                sent = true;
+            }
+            catch (Exception ex)
             {
-                ActionCode = DateTime.Now.Ticks.ToString(),
-                ActionTime = DateTime.Now,
-                ActionType = ActionType.EmailMessage,
-                Comments = "Automated Email",
-                CompanyRepresentative = "Company Representative",
-                SubmissionTime = DateTime.Now,
-                UniversalIP = rfq.UniversalIP
-            };
-            var newRfq = _context.RFQs.Where(r => r.RFQId == rfq.RFQId).Include(r => r.RFQActions).SingleOrDefault();
-            newRfq.RFQActions.Add(rfqAction);
-            _context.SaveChanges();
-        }
+                sent = false;
+                throw ex;
+            }
 
+            if (sent)
+            {
+                RFQAction rfqAction = new RFQAction
+                {
+                    ActionCode = DateTime.Now.Ticks.ToString(),
+                    ActionTime = DateTime.Now,
+                    ActionType = ActionType.EmailMessage,
+                    Comments = "Automated Email",
+                    CompanyRepresentative = "Company Representative",
+                    SubmissionTime = DateTime.Now,
+                    UniversalIP = rfq.UniversalIP
+                };
+                var newRfq = _context.RFQs.Where(r => r.RFQId == rfq.RFQId).Include(r => r.RFQActions).SingleOrDefault();
+                newRfq.RFQActions.Add(rfqAction);
+                _context.SaveChanges();
+            }
+        }
+        
         return new NoContentResult();
     }
 

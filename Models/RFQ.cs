@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using acscustomersgatebackend.Models.Enumerations;
 using Microsoft.EntityFrameworkCore;
 
 namespace acscustomersgatebackend.Models
@@ -21,11 +22,14 @@ namespace acscustomersgatebackend.Models
         public string Address { get; set; }
         public string ContactPersonArabicName { get; set; }
         public string ContactPersonPosition { get; set; }
-        public string Status { get; set; }
+        public Status Status { get; set; }
         public DateTime SubmissionTime { get; set; }
         public string UniversalIP { get; set; }
 
         // Navigation Properties
         public ICollection<RFQAction> RFQActions { get; set; }
+
+        // Not Mapped Properties
+        public bool SendEmail { get; set; } = false;
     }
 }

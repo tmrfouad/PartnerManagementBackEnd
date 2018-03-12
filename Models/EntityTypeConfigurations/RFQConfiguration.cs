@@ -22,6 +22,9 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
                 .IsRequired()
                 .HasColumnType("datetime");
             entityTypeBuilder.Property(r => r.UniversalIP).IsRequired();
+
+            // not mapped properties
+            entityTypeBuilder.Ignore(r => r.SendEmail);
         }
     }
 }
