@@ -26,7 +26,7 @@ public class RepController : Controller
         if(Repitem == null)
             return NoContent();
 
-        Repitem.SubmissionTime = DateTime.Now;  
+        Repitem.Created = DateTime.Now;  
         _db.Representatives.Add(Repitem);
         _db.SaveChanges();
 

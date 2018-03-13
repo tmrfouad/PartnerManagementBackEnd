@@ -7,9 +7,11 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
     {
         public void Configure(EntityTypeBuilder<RFQ> entityTypeBuilder)
         {
+            // Indecies
             entityTypeBuilder.HasIndex(r => r.RFQCode).IsUnique();
             entityTypeBuilder.HasIndex(r => r.ContactPersonEmail).IsUnique();
 
+            // Constraints & Datatypes
             entityTypeBuilder.Property(r => r.RFQCode).IsRequired();
             entityTypeBuilder.Property(r => r.CompanyEnglishName).IsRequired();
             entityTypeBuilder.Property(r => r.ContactPersonEnglishName).IsRequired();
@@ -23,7 +25,7 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
                 .HasColumnType("datetime");
             entityTypeBuilder.Property(r => r.UniversalIP).IsRequired();
 
-            // not mapped properties
+            // Not Mapped Properties
             entityTypeBuilder.Ignore(r => r.SendEmail);
         }
     }
