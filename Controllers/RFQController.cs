@@ -54,7 +54,7 @@ public class RFQController : Controller
     {
         if (rfq == null)
         {
-            BadRequest();
+           return BadRequest();
         }
 
         bool saved = false;
