@@ -12,9 +12,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180313113631_ChangeRepSubmissionTimeToCreated")]
+    partial class ChangeRepSubmissionTimeToCreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,7 +84,7 @@ namespace acscustomersgatebackend.Migrations
 
             modelBuilder.Entity("acscustomersgatebackend.Models.Representative", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("RepresentativeId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Address")
@@ -108,7 +109,7 @@ namespace acscustomersgatebackend.Migrations
                     b.Property<string>("UniversalIP")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("RepresentativeId");
 
                     b.ToTable("Representatives");
                 });
@@ -188,9 +189,10 @@ namespace acscustomersgatebackend.Migrations
                     b.Property<string>("Comments")
                         .IsRequired();
 
-                    b.Property<int>("RFQId");
+                    b.Property<string>("CompanyRepresentative")
+                        .IsRequired();
 
-                    b.Property<int>("RepresentativeId");
+                    b.Property<int>("RFQId");
 
                     b.Property<DateTime>("SubmissionTime")
                         .HasColumnType("datetime");
@@ -204,8 +206,6 @@ namespace acscustomersgatebackend.Migrations
                         .IsUnique();
 
                     b.HasIndex("RFQId");
-
-                    b.HasIndex("RepresentativeId");
 
                     b.ToTable("RFQAction");
                 });
@@ -382,11 +382,6 @@ namespace acscustomersgatebackend.Migrations
                     b.HasOne("acscustomersgatebackend.Models.RFQ", "RFQ")
                         .WithMany("RFQActions")
                         .HasForeignKey("RFQId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("acscustomersgatebackend.Models.Representative", "Representative")
-                        .WithMany("RFQActions")
-                        .HasForeignKey("RepresentativeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

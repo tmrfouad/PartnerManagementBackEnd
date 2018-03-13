@@ -8,13 +8,14 @@ namespace acscustomersgatebackend.Models
         public string ActionCode { get; set; }
         public DateTime ActionTime { get; set; }
         public Enumerations.ActionType ActionType { get; set; }
-        public string CompanyRepresentative { get; set; }
         public string Comments { get; set; }
-        public int RFQId { get; set; }
-        public DateTime SubmissionTime { get; set; }
         public string UniversalIP { get; set; }
+        public DateTime SubmissionTime { get; set; }
 
         // Navigation Properties
+        public int RFQId { get; set; }
         public RFQ RFQ { get; set; }
+        public int RepresentativeId { get; set; }
+        public Representative Representative { get; set; }
     }
 }

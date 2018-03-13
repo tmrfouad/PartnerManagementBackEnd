@@ -30,9 +30,9 @@ public class RepController : Controller
             if (Repitem == null)
                 return NoContent();
 
-            Repitem.SubmissionTime = DateTime.Now;
-            _db.Representatives.Add(Repitem);
-            _db.SaveChanges();
+        Repitem.Created = DateTime.Now;  
+        _db.Representatives.Add(Repitem);
+        _db.SaveChanges();
 
             return new NoContentResult();
         }
@@ -54,7 +54,7 @@ public class RepController : Controller
     {
         try
         {
-            var rep = _db.Representatives.SingleOrDefault(x => x.RepresentativeId == id);
+            var rep = _db.Representatives.SingleOrDefault(x => x.Id == id);
             return rep;
         }
         catch
@@ -70,7 +70,7 @@ public class RepController : Controller
         {
             var rep = _db.Representatives.Find(id);
 
-            if (id != representative.RepresentativeId)
+            if (id != representative.Id)
                 return BadRequest();
 
             if (rep == null)
@@ -83,7 +83,7 @@ public class RepController : Controller
             rep.PersonalPhone = representative.PersonalPhone;
             rep.Phone = representative.Phone;
             rep.Position = representative.Position;
-            rep.SubmissionTime = DateTime.Now;
+            rep.Created = DateTime.Now;
             rep.UniversalIP = representative.UniversalIP;
             _db.SaveChanges();
             return new ObjectResult(rep);

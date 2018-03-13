@@ -107,7 +107,7 @@ public class RFQController : Controller
                     ActionTime = DateTime.Now,
                     ActionType = ActionType.EmailMessage,
                     Comments = "Automated Email",
-                    CompanyRepresentative = "Company Representative",
+                    RepresentativeId = 0,
                     SubmissionTime = DateTime.Now,
                     UniversalIP = rfq.UniversalIP
                 };
@@ -199,7 +199,7 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
-                    a.CompanyRepresentative,
+                    a.RepresentativeId,
                     a.Id,
                     a.RFQId,
                     a.SubmissionTime,
@@ -233,7 +233,7 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
-                    a.CompanyRepresentative,
+                    a.RepresentativeId,
                     a.Id,
                     a.RFQId,
                     a.SubmissionTime,
@@ -284,7 +284,7 @@ public class RFQController : Controller
         }
 
         orgAction.ActionType = action.ActionType;
-        orgAction.CompanyRepresentative = action.CompanyRepresentative;
+        orgAction.RepresentativeId = action.RepresentativeId;
         orgAction.Comments = action.Comments;
         orgAction.UniversalIP = action.UniversalIP;
 
