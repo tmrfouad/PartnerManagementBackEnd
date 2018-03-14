@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using acscustomersgatebackend.Models.Enumerations;
-using Microsoft.EntityFrameworkCore;
 
 namespace acscustomersgatebackend.Models
 {

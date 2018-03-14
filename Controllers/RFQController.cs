@@ -183,6 +183,7 @@ public class RFQController : Controller
         var item = _context.RFQs
             .Where(o => o.RFQId == id)
             .Include(r => r.RFQActions)
+            .ThenInclude(a => a.Representative)
             .FirstOrDefault();
 
         if (item == null)
@@ -199,7 +200,18 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
-                    a.RepresentativeId,
+                    Representative = new {
+                        a.Representative.Address,
+                        a.Representative.Continuous,
+                        a.Representative.Created,
+                        a.Representative.DateOfBirth,
+                        a.Representative.Id,
+                        a.Representative.Name,
+                        a.Representative.PersonalPhone,
+                        a.Representative.Phone,
+                        a.Representative.Position,
+                        a.Representative.UniversalIP
+                    },
                     a.Id,
                     a.RFQId,
                     a.SubmissionTime,
@@ -217,6 +229,7 @@ public class RFQController : Controller
         var item = _context.RFQs
             .Where(o => o.RFQId == id)
             .Include(r => r.RFQActions)
+            .ThenInclude(a => a.Representative)
             .FirstOrDefault();
 
         if (item == null)
@@ -233,7 +246,18 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
-                    a.RepresentativeId,
+                    Representative = new {
+                        a.Representative.Address,
+                        a.Representative.Continuous,
+                        a.Representative.Created,
+                        a.Representative.DateOfBirth,
+                        a.Representative.Id,
+                        a.Representative.Name,
+                        a.Representative.PersonalPhone,
+                        a.Representative.Phone,
+                        a.Representative.Position,
+                        a.Representative.UniversalIP
+                    },
                     a.Id,
                     a.RFQId,
                     a.SubmissionTime,

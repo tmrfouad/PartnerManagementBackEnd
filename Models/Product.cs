@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using acscustomersgatebackend.Models.Enumerations;
 
 namespace acscustomersgatebackend.Models
 {
