@@ -64,7 +64,7 @@ public class RepController : Controller
     }
 
     [HttpPut("{id}")]
-    public ActionResult Put(int id, Representative representative)
+    public ActionResult Put(int id,[FromBody] Representative representative)
     {
         try
         {
@@ -101,7 +101,7 @@ public class RepController : Controller
         try
         {
             var representative = _db.Representatives.Find(id);
-            if (representative != null)
+            if (representative == null)
                 return BadRequest();
 
             _db.Representatives.Remove(representative);
