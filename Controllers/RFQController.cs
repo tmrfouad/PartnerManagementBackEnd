@@ -30,32 +30,32 @@ public class RFQController : Controller
     #region RFQs
     // GET RFQ/Get
     [HttpGet]
-    public IEnumerable<RFQ> Get()
+    public async Task<IEnumerable<RFQ>> Get()
     {
-        return _context.RFQs.ToList();
+        return await Task.Run(() => _context.RFQs.ToList());
     }
 
     // GET RFQ/Get/5
     [HttpGet("{id}", Name = "GetRFQ")]
-    public ActionResult Get(int id)
+    public async Task<ActionResult> Get(int id)
     {
         var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
         if (item == null)
         {
-            return NotFound();
+            return await Task.Run(() => NotFound());
         }
 
-        return new ObjectResult(item);
+        return await Task.Run(() => new ObjectResult(item));
     }
 
     // POST RFQ/Post
     [HttpPost]
     [AllowAnonymous]
-    public ActionResult Post([FromBody]RFQ rfq)
+    public async Task<ActionResult> Post([FromBody]RFQ rfq)
     {
         if (rfq == null)
         {
-           return BadRequest();
+           return await Task.Run(() => BadRequest());
         }
 
         bool saved = false;
@@ -76,7 +76,7 @@ public class RFQController : Controller
         }
 
         if (!saved)
-            return new NoContentResult();
+            return await Task.Run(() => new NoContentResult());
 
         if (rfq.SendEmail)
         {
@@ -117,22 +117,22 @@ public class RFQController : Controller
             }
         }
         
-        return new NoContentResult();
+        return await Task.Run(() => new NoContentResult());
     }
 
     // PUT RFQ/Put/5
     [HttpPut("{id}")]
-    public ActionResult Put(int id, [FromBody]RFQ rfq)
+    public async Task<ActionResult> Put(int id, [FromBody]RFQ rfq)
     {
         if (rfq == null || rfq.RFQId != id)
         {
-            return BadRequest();
+            return await Task.Run(() => BadRequest());
         }
 
         var orgItem = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
         if (orgItem == null)
         {
-            return NotFound();
+            return await Task.Run(() => NotFound());
         }
 
         orgItem.Address = rfq.Address;
@@ -155,23 +155,23 @@ public class RFQController : Controller
         _context.RFQs.Update(orgItem);
         _context.SaveChanges();
 
-        return new ObjectResult(orgItem);
+        return await Task.Run(() => new ObjectResult(orgItem));
     }
 
     // DELETE RFQ/Delete/5
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
         var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
         if (item == null)
         {
-            return NotFound();
+            return await Task.Run(() => NotFound());
         }
 
         _context.RFQs.Remove(item);
         _context.SaveChanges();
 
-        return new NoContentResult();
+        return await Task.Run(() => new NoContentResult());
     }
     #endregion
 
@@ -268,6 +268,52 @@ public class RFQController : Controller
         return await Task.Run(() => rfqActions);
     }
 
+    // GET RFQ/Actions/5/1
+    [HttpGet("{id}", Name = "GetRFQActionById")]
+    public async Task<ActionResult> Action(int id, int actionId)
+    {
+        var item = _context.RFQs
+            .Where(o => o.RFQId == id)
+            .Include(r => r.RFQActions)
+            .ThenInclude(a => a.Representative)
+            .FirstOrDefault();
+
+        if (item == null)
+        {
+            return await Task.Run(() => NotFound());
+        }
+
+        var rfqActions = item.RFQActions
+            .Select(a =>
+            {
+                return new
+                {
+                    a.ActionCode,
+                    a.ActionTime,
+                    a.ActionType,
+                    a.Comments,
+                    Representative = new {
+                        a.Representative.Address,
+                        a.Representative.Continuous,
+                        a.Representative.Created,
+                        a.Representative.DateOfBirth,
+                        a.Representative.Id,
+                        a.Representative.Name,
+                        a.Representative.PersonalPhone,
+                        a.Representative.Phone,
+                        a.Representative.Position,
+                        a.Representative.UniversalIP
+                    },
+                    a.Id,
+                    a.RFQId,
+                    a.SubmissionTime,
+                    a.UniversalIP
+                };
+            });
+
+        return await Task.Run(() => new ObjectResult(rfqActions));
+    }
+
     // POST RFQ/AddStatus/5
     [HttpPost("{id}", Name = "AddRFQAction")]
     public async Task<ActionResult> AddStatus(int id, [FromBody]RFQAction action)
@@ -289,22 +335,22 @@ public class RFQController : Controller
         return await Task.Run(() => new NoContentResult());
     }
 
-    // POST RFQ/UpdateStatus/5/1
-    [HttpPost("{id}/{actionId}", Name = "UpdateRFQAction")]
+    // PUT RFQ/UpdateStatus/5/1
+    [HttpPut("{id}/{actionId}", Name = "UpdateRFQAction")]
     public async Task<ActionResult> UpdateStatus(int id, int actionId, [FromBody]RFQAction action)
     {
         var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).FirstOrDefault();
 
         if (item == null)
         {
-            return NotFound();
+            return await Task.Run(() => NotFound());
         }
 
         var orgAction = item.RFQActions.Where(a => a.Id == actionId).FirstOrDefault();
 
         if (orgAction == null)
         {
-            return NotFound();
+            return await Task.Run(() => NotFound());
         }
 
         orgAction.ActionType = action.ActionType;
@@ -320,7 +366,7 @@ public class RFQController : Controller
     }
 
     // POST RFQ/DeleteStatus/5/1
-    [HttpPost("{id}/{actionId}", Name = "DeleteRFQAction")]
+    [HttpDelete("{id}/{actionId}", Name = "DeleteRFQAction")]
     public async Task<ActionResult> DeleteStatus(int id, int actionId)
     {
         var item = _context.RFQs
@@ -330,7 +376,7 @@ public class RFQController : Controller
 
         if (item == null)
         {
-            return NotFound();
+            return await Task.Run(() => NotFound());
         }
 
         var action = item.RFQActions
@@ -339,7 +385,7 @@ public class RFQController : Controller
 
         if (action == null)
         {
-            return NotFound();
+            return await Task.Run(() => NotFound());
         }
 
         item.RFQActions.Remove(action);

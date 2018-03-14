@@ -108,7 +108,7 @@ public class ProductController : Controller
 
     #region ProductEditions
     // GET Product/Edidtion/5
-    [HttpGet("{id}", Name = "GetProductEditions")]
+    [HttpGet("{id}", Name = "GetAllProductEditions")]
     public async Task<IEnumerable<Object>> Editions(int id)
     {
         var item = _context.Products
@@ -136,6 +136,38 @@ public class ProductController : Controller
             });
 
         return await Task.Run(() => editions);
+    }
+    
+    // GET Product/Edidtions/5/1
+    [HttpGet("{id}/{editionId}", Name = "GetProductEditionById")]
+    public async Task<ActionResult> Editions(int id, int editionId)
+    {
+        var item = _context.Products
+            .Where(o => o.Id == id)
+            .Include(r => r.ProductEditions)
+            .FirstOrDefault();
+
+        if (item == null)
+        {
+            return await Task.Run(() => NotFound());
+        }
+
+        var edition = item.ProductEditions
+            .Where(e => e.Id == editionId)
+            .Select(e =>
+            {
+                return new
+                {
+                    e.ArabicName,
+                    e.Created,
+                    e.EnglishName,
+                    e.Id,
+                    e.ProductId,
+                    e.UniversalIP
+                };
+            });
+
+        return await Task.Run(() => new ObjectResult(edition));
     }
 
     // POST Product/AddEdition/5
@@ -193,7 +225,7 @@ public class ProductController : Controller
     }
 
     // POST Product/DeleteEdition/5/1
-    [HttpPost("{id}/{editionId}", Name = "DeleteProductEdition")]
+    [HttpDelete("{id}/{editionId}", Name = "DeleteProductEdition")]
     public async Task<ActionResult> DeleteEdition(int id, int editionId)
     {
         var item = _context.Products
