@@ -318,5 +318,34 @@ public class RFQController : Controller
 
         return await Task.Run(() => new NoContentResult());
     }
+
+    // POST RFQ/DeleteStatus/5/1
+    [HttpPost("{id}/{actionId}", Name = "DeleteRFQAction")]
+    public async Task<ActionResult> DeleteStatus(int id, int actionId)
+    {
+        var item = _context.RFQs
+            .Where(o => o.RFQId == id)
+            .Include(r => r.RFQActions)
+            .FirstOrDefault();
+
+        if (item == null)
+        {
+            return NotFound();
+        }
+
+        var action = item.RFQActions
+            .Where(a => a.Id == actionId)
+            .FirstOrDefault();
+
+        if (action == null)
+        {
+            return NotFound();
+        }
+
+        item.RFQActions.Remove(action);
+        _context.SaveChanges();
+
+        return await Task.Run(() => new NoContentResult());
+    }
     #endregion
 }
