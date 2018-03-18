@@ -55,7 +55,7 @@ public class RFQController : Controller
     {
         if (rfq == null)
         {
-           return await Task.Run(() => BadRequest());
+            return await Task.Run(() => BadRequest());
         }
 
         bool saved = false;
@@ -116,7 +116,7 @@ public class RFQController : Controller
                 _context.SaveChanges();
             }
         }
-        
+
         return await Task.Run(() => new NoContentResult());
     }
 
@@ -184,6 +184,8 @@ public class RFQController : Controller
             .Where(o => o.RFQId == id)
             .Include(r => r.RFQActions)
             .ThenInclude(a => a.Representative)
+            .Include(r => r.RFQActions)
+            .ThenInclude(a => a.RFQActionAtts)
             .FirstOrDefault();
 
         if (item == null)
@@ -200,7 +202,8 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
-                    Representative = new {
+                    Representative = new
+                    {
                         a.Representative.Address,
                         a.Representative.Continuous,
                         a.Representative.Created,
@@ -212,9 +215,10 @@ public class RFQController : Controller
                         a.Representative.Position,
                         a.Representative.UniversalIP
                     },
-                    RFQActionAtts = a.RFQActionAtts.Select(att => {
-                        return new {
-                            att.Id,
+                    RFQActionAtts = a.RFQActionAtts.Select(att =>
+                    {
+                        return new
+                        {
                             att.FileName,
                             att.FileUrl
                         };
@@ -237,6 +241,8 @@ public class RFQController : Controller
             .Where(o => o.RFQId == id)
             .Include(r => r.RFQActions)
             .ThenInclude(a => a.Representative)
+            .Include(r => r.RFQActions)
+            .ThenInclude(a => a.RFQActionAtts)
             .FirstOrDefault();
 
         if (item == null)
@@ -253,7 +259,8 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
-                    Representative = new {
+                    Representative = new
+                    {
                         a.Representative.Address,
                         a.Representative.Continuous,
                         a.Representative.Created,
@@ -265,9 +272,10 @@ public class RFQController : Controller
                         a.Representative.Position,
                         a.Representative.UniversalIP
                     },
-                    RFQActionAtts = a.RFQActionAtts.Select(att => {
-                        return new {
-                            att.Id,
+                    RFQActionAtts = a.RFQActionAtts.Select(att =>
+                    {
+                        return new
+                        {
                             att.FileName,
                             att.FileUrl
                         };
@@ -290,6 +298,8 @@ public class RFQController : Controller
             .Where(o => o.RFQId == id)
             .Include(r => r.RFQActions)
             .ThenInclude(a => a.Representative)
+            .Include(r => r.RFQActions)
+            .ThenInclude(a => a.RFQActionAtts)
             .FirstOrDefault();
 
         if (item == null)
@@ -306,7 +316,8 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
-                    Representative = new {
+                    Representative = new
+                    {
                         a.Representative.Address,
                         a.Representative.Continuous,
                         a.Representative.Created,
@@ -318,9 +329,10 @@ public class RFQController : Controller
                         a.Representative.Position,
                         a.Representative.UniversalIP
                     },
-                    RFQActionAtts = a.RFQActionAtts.Select(att => {
-                        return new {
-                            att.Id,
+                    RFQActionAtts = a.RFQActionAtts.Select(att =>
+                    {
+                        return new
+                        {
                             att.FileName,
                             att.FileUrl
                         };
@@ -360,7 +372,7 @@ public class RFQController : Controller
     [HttpPut("{id}/{actionId}", Name = "UpdateRFQAction")]
     public async Task<ActionResult> UpdateStatus(int id, int actionId, [FromBody]RFQAction action)
     {
-        var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).FirstOrDefault();
+        var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).ThenInclude(a => a.RFQActionAtts).FirstOrDefault();
 
         if (item == null)
         {
@@ -378,7 +390,29 @@ public class RFQController : Controller
         orgAction.RepresentativeId = action.RepresentativeId;
         orgAction.Comments = action.Comments;
         orgAction.UniversalIP = action.UniversalIP;
-        orgAction.RFQActionAtts = action.RFQActionAtts;
+
+        foreach (var att in orgAction.RFQActionAtts.Reverse())
+        {
+            if (action.RFQActionAtts.Count(at => actionId == att.RFQActionId && at.FileName == att.FileName) == 0)
+            {
+                orgAction.RFQActionAtts.Remove(att);
+            }
+        }
+
+        foreach (var att in action.RFQActionAtts)
+        {
+            if (orgAction.RFQActionAtts.Count(at => at.RFQActionId == actionId && at.FileName == att.FileName) == 0)
+            {
+                // if (System.IO.Directory.Exists())
+                // {
+                    
+                // }
+                string url = AppDomain.CurrentDomain.BaseDirectory + $"wwwroot\\Att\\{ id }\\{ actionId }" + att.FileName;
+                // att.FileUrl = url;
+                // System.IO.File.WriteAllBytes(url, Convert.FromBase64String(att.Value));
+                orgAction.RFQActionAtts.Add(att);
+            }
+        }
 
         orgAction.SubmissionTime = DateTime.Now;
 

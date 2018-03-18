@@ -12,9 +12,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180318142014_RemoveIdFromAttachmentTable")]
+    partial class RemoveIdFromAttachmentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,8 +216,6 @@ namespace acscustomersgatebackend.Migrations
                     b.Property<string>("FileName");
 
                     b.Property<string>("FileUrl");
-
-                    b.Property<string>("Value");
 
                     b.HasKey("RFQActionId", "FileName");
 

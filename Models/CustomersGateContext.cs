@@ -23,6 +23,7 @@ namespace acscustomersgatebackend.Models
         {
             modelBuilder.ApplyConfiguration(new RFQConfiguration());
             modelBuilder.ApplyConfiguration(new RFQActionConfiguration());
+            modelBuilder.ApplyConfiguration(new RFQActionAttConfiguration());
             modelBuilder.ApplyConfiguration(new RepresentativeConfigration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new ProductEditionConfiguration());
