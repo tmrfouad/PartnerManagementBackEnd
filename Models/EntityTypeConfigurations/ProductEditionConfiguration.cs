@@ -9,7 +9,7 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
         {
             // Indecies
             entityTypeBuilder.HasIndex(r => r.Id).IsUnique();
-            entityTypeBuilder.HasIndex(r => r.EnglishName).IsUnique();
+            entityTypeBuilder.HasIndex(r => new {r.ProductId, r.EnglishName}).IsUnique();
 
             // Constraints & Datatypes
             entityTypeBuilder.Property(r => r.Id).IsRequired();

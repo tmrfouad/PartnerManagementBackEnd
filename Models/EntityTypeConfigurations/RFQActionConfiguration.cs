@@ -28,6 +28,11 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
                 .HasOne(a => a.RFQ)
                 .WithMany(r => r.RFQActions)
                 .HasForeignKey(a => a.RFQId);
+
+            entityTypeBuilder
+                .HasMany(a => a.RFQActionAtts)
+                .WithOne(att => att.RFQAction)
+                .HasForeignKey(a => a.RFQActionId);
         }
     }
 }

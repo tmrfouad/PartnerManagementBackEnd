@@ -212,6 +212,13 @@ public class RFQController : Controller
                         a.Representative.Position,
                         a.Representative.UniversalIP
                     },
+                    RFQActionAtts = a.RFQActionAtts.Select(att => {
+                        return new {
+                            att.Id,
+                            att.FileName,
+                            att.FileUrl
+                        };
+                    }),
                     a.Id,
                     a.RFQId,
                     a.SubmissionTime,
@@ -258,6 +265,13 @@ public class RFQController : Controller
                         a.Representative.Position,
                         a.Representative.UniversalIP
                     },
+                    RFQActionAtts = a.RFQActionAtts.Select(att => {
+                        return new {
+                            att.Id,
+                            att.FileName,
+                            att.FileUrl
+                        };
+                    }),
                     a.Id,
                     a.RFQId,
                     a.SubmissionTime,
@@ -304,6 +318,13 @@ public class RFQController : Controller
                         a.Representative.Position,
                         a.Representative.UniversalIP
                     },
+                    RFQActionAtts = a.RFQActionAtts.Select(att => {
+                        return new {
+                            att.Id,
+                            att.FileName,
+                            att.FileUrl
+                        };
+                    }),
                     a.Id,
                     a.RFQId,
                     a.SubmissionTime,
@@ -357,6 +378,7 @@ public class RFQController : Controller
         orgAction.RepresentativeId = action.RepresentativeId;
         orgAction.Comments = action.Comments;
         orgAction.UniversalIP = action.UniversalIP;
+        orgAction.RFQActionAtts = action.RFQActionAtts;
 
         orgAction.SubmissionTime = DateTime.Now;
 

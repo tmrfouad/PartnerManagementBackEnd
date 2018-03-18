@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace acscustomersgatebackend.Models
 {
@@ -17,5 +18,6 @@ namespace acscustomersgatebackend.Models
         public RFQ RFQ { get; set; }
         public int RepresentativeId { get; set; }
         public Representative Representative { get; set; }
+        public ICollection<RFQActionAtt> RFQActionAtts { get; set; }
     }
 }
