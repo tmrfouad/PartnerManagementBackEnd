@@ -9,13 +9,13 @@ namespace acscustomersgatebackend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql("SET IDENTITY_INSERT Products ON");
-            migrationBuilder.Sql("INSERT INTO Products (Id, EnglishName, ArabicName, Created, UniversalIP) SELECT 1, 'Process Perfect', N'بروسيس بيرفكت', GETDATE(), '0.0.0.0' FROM Products WHERE NOT EXISTS(SELECT Id FROM Products WHERE Id = 1)");
+            migrationBuilder.Sql("INSERT INTO Products (Id, EnglishName, ArabicName, Created, UniversalIP) SELECT 1, 'Process Perfect', N'بروسيس بيرفكت', GETDATE(), '0.0.0.0' WHERE NOT EXISTS(SELECT Id FROM Products WHERE Id = 1)");
             migrationBuilder.Sql("SET IDENTITY_INSERT Products OFF");
 
             migrationBuilder.Sql("SET IDENTITY_INSERT ProductEdition ON");
-            migrationBuilder.Sql("INSERT INTO ProductEdition (ProductId, Id, EnglishName, ArabicName, Created, UniversalIP) SELECT 1, 1, 'Lite', N'لايت', GETDATE(), '0.0.0.0' FROM ProductEdition WHERE NOT EXISTS(SELECT Id FROM ProductEdition WHERE ProductId = 1 AND Id = 1)");
-            migrationBuilder.Sql("INSERT INTO ProductEdition (ProductId, Id, EnglishName, ArabicName, Created, UniversalIP) SELECT 1, 2, 'Standard', N'ستاندارد', GETDATE(), '0.0.0.0' FROM ProductEdition WHERE NOT EXISTS(SELECT Id FROM ProductEdition WHERE ProductId = 1 AND Id = 2)");
-            migrationBuilder.Sql("INSERT INTO ProductEdition (ProductId, Id, EnglishName, ArabicName, Created, UniversalIP) SELECT 1, 3, 'Enterprise', N'انتربرايز', GETDATE(), '0.0.0.0' FROM ProductEdition WHERE NOT EXISTS(SELECT Id FROM ProductEdition WHERE ProductId = 1 AND Id = 3)");
+            migrationBuilder.Sql("INSERT INTO ProductEdition (ProductId, Id, EnglishName, ArabicName, Created, UniversalIP) SELECT 1, 1, 'Lite', N'لايت', GETDATE(), '0.0.0.0' WHERE NOT EXISTS(SELECT Id FROM ProductEdition WHERE ProductId = 1 AND Id = 1)");
+            migrationBuilder.Sql("INSERT INTO ProductEdition (ProductId, Id, EnglishName, ArabicName, Created, UniversalIP) SELECT 1, 2, 'Standard', N'ستاندارد', GETDATE(), '0.0.0.0' WHERE NOT EXISTS(SELECT Id FROM ProductEdition WHERE ProductId = 1 AND Id = 2)");
+            migrationBuilder.Sql("INSERT INTO ProductEdition (ProductId, Id, EnglishName, ArabicName, Created, UniversalIP) SELECT 1, 3, 'Enterprise', N'انتربرايز', GETDATE(), '0.0.0.0' WHERE NOT EXISTS(SELECT Id FROM ProductEdition WHERE ProductId = 1 AND Id = 3)");
             migrationBuilder.Sql("SET IDENTITY_INSERT ProductEdition OFF");
 
             migrationBuilder.Sql("UPDATE RFQs SET SelectedBundle = '1' WHERE TargetedProduct = 'Process Perfect' AND SelectedBundle = 'Lite'");
