@@ -221,6 +221,7 @@ public class RFQController : Controller
                         {
                             att.FileName,
                             att.FileUrl,
+                            att.FileType,
                             att.Value
                         };
                     }),
@@ -277,6 +278,7 @@ public class RFQController : Controller
                     {
                         att.FileName,
                         att.FileUrl,
+                        att.FileType,
                         att.Value
                     }),
                     a.Id,
@@ -332,6 +334,7 @@ public class RFQController : Controller
                     {
                         att.FileName,
                         att.FileUrl,
+                        att.FileType,
                         att.Value
                     }),
                     a.Id,
