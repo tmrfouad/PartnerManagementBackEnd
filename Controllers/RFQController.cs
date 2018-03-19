@@ -220,7 +220,8 @@ public class RFQController : Controller
                         return new
                         {
                             att.FileName,
-                            att.FileUrl
+                            att.FileUrl,
+                            att.Value
                         };
                     }),
                     a.Id,
@@ -272,13 +273,11 @@ public class RFQController : Controller
                         a.Representative.Position,
                         a.Representative.UniversalIP
                     },
-                    RFQActionAtts = a.RFQActionAtts.Select(att =>
+                    RFQActionAtts = a.RFQActionAtts.Select(att => new
                     {
-                        return new
-                        {
-                            att.FileName,
-                            att.FileUrl
-                        };
+                        att.FileName,
+                        att.FileUrl,
+                        att.Value
                     }),
                     a.Id,
                     a.RFQId,
@@ -329,13 +328,11 @@ public class RFQController : Controller
                         a.Representative.Position,
                         a.Representative.UniversalIP
                     },
-                    RFQActionAtts = a.RFQActionAtts.Select(att =>
+                    RFQActionAtts = a.RFQActionAtts.Select(att => new
                     {
-                        return new
-                        {
-                            att.FileName,
-                            att.FileUrl
-                        };
+                        att.FileName,
+                        att.FileUrl,
+                        att.Value
                     }),
                     a.Id,
                     a.RFQId,
@@ -405,7 +402,7 @@ public class RFQController : Controller
             {
                 // if (System.IO.Directory.Exists())
                 // {
-                    
+
                 // }
                 string url = AppDomain.CurrentDomain.BaseDirectory + $"wwwroot\\Att\\{ id }\\{ actionId }" + att.FileName;
                 // att.FileUrl = url;
