@@ -12,9 +12,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180319075807_ChangeRfqTagetedProductAndSelectedBundleTypeToInt")]
+    partial class ChangeRfqTagetedProductAndSelectedBundleTypeToInt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,11 +52,8 @@ namespace acscustomersgatebackend.Migrations
 
             modelBuilder.Entity("acscustomersgatebackend.Models.ProductEdition", b =>
                 {
-                    b.Property<int>("ProductId");
-
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ArabicName")
                         .IsRequired();
@@ -66,10 +64,12 @@ namespace acscustomersgatebackend.Migrations
                     b.Property<string>("EnglishName")
                         .IsRequired();
 
+                    b.Property<int>("ProductId");
+
                     b.Property<string>("UniversalIP")
                         .IsRequired();
 
-                    b.HasKey("ProductId", "Id");
+                    b.HasKey("Id");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -144,14 +144,14 @@ namespace acscustomersgatebackend.Migrations
                     b.Property<string>("RFQCode")
                         .IsRequired();
 
-                    b.Property<int>("SelectedEditionId");
+                    b.Property<int>("SelectedBundle");
 
                     b.Property<int>("Status");
 
                     b.Property<DateTime>("SubmissionTime")
                         .HasColumnType("datetime");
 
-                    b.Property<int>("TargetedProductId");
+                    b.Property<int>("TargetedProduct");
 
                     b.Property<string>("UniversalIP")
                         .IsRequired();
@@ -165,8 +165,6 @@ namespace acscustomersgatebackend.Migrations
 
                     b.HasIndex("RFQCode")
                         .IsUnique();
-
-                    b.HasIndex("TargetedProductId", "SelectedEditionId");
 
                     b.ToTable("RFQs");
                 });
@@ -391,19 +389,6 @@ namespace acscustomersgatebackend.Migrations
                         .WithMany("ProductEditions")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("acscustomersgatebackend.Models.RFQ", b =>
-                {
-                    b.HasOne("acscustomersgatebackend.Models.Product", "TargetedProduct")
-                        .WithMany("RFQs")
-                        .HasForeignKey("TargetedProductId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("acscustomersgatebackend.Models.ProductEdition", "SelectedEdition")
-                        .WithMany("RFQs")
-                        .HasForeignKey("TargetedProductId", "SelectedEditionId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("acscustomersgatebackend.Models.RFQAction", b =>

@@ -17,13 +17,24 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
             entityTypeBuilder.Property(r => r.ContactPersonEnglishName).IsRequired();
             entityTypeBuilder.Property(r => r.ContactPersonEmail).IsRequired();
             entityTypeBuilder.Property(r => r.ContactPersonMobile).IsRequired();
-            entityTypeBuilder.Property(r => r.TargetedProduct).IsRequired();
-            entityTypeBuilder.Property(r => r.SelectedBundle).IsRequired();
+            entityTypeBuilder.Property(r => r.TargetedProductId).IsRequired();
+            entityTypeBuilder.Property(r => r.SelectedEditionId).IsRequired();
             entityTypeBuilder.Property(r => r.Status).IsRequired();
             entityTypeBuilder.Property(r => r.SubmissionTime)
                 .IsRequired()
                 .HasColumnType("datetime");
             entityTypeBuilder.Property(r => r.UniversalIP).IsRequired();
+
+            // Relations
+            entityTypeBuilder.HasOne(r => r.TargetedProduct)
+                .WithMany(p => p.RFQs)
+                .HasForeignKey(r => r.TargetedProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+            entityTypeBuilder.HasOne(r => r.SelectedEdition)
+                .WithMany(e => e.RFQs)
+                .HasForeignKey(r => new { r.TargetedProductId, r.SelectedEditionId })
+                .OnDelete(DeleteBehavior.Restrict);
+                
 
             // Not Mapped Properties
             entityTypeBuilder.Ignore(r => r.SendEmail);

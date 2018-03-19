@@ -30,9 +30,48 @@ public class RFQController : Controller
     #region RFQs
     // GET RFQ/Get
     [HttpGet]
-    public async Task<IEnumerable<RFQ>> Get()
+    public async Task<IEnumerable<Object>> Get()
     {
-        return await Task.Run(() => _context.RFQs.ToList());
+        return await Task.Run(() => _context.RFQs
+            .Include(r => r.TargetedProduct)
+            .Include(r => r.SelectedEdition)
+            .Select(r => new
+            {
+                r.Address,
+                r.CompanyArabicName,
+                r.CompanyEnglishName,
+                r.ContactPersonArabicName,
+                r.ContactPersonEmail,
+                r.ContactPersonEnglishName,
+                r.ContactPersonMobile,
+                r.ContactPersonPosition,
+                r.Location,
+                r.PhoneNumber,
+                r.RFQCode,
+                r.RFQId,
+                SelectedEdition = new
+                {
+                    r.SelectedEdition.ArabicName,
+                    r.SelectedEdition.Created,
+                    r.SelectedEdition.EnglishName,
+                    r.SelectedEdition.Id,
+                    r.SelectedEdition.ProductId,
+                    r.SelectedEdition.UniversalIP
+                },
+                r.Status,
+                r.SubmissionTime,
+                TargetedProduct = new
+                {
+                    r.TargetedProduct.ArabicName,
+                    r.TargetedProduct.Created,
+                    r.TargetedProduct.EnglishName,
+                    r.TargetedProduct.Id,
+                    r.TargetedProduct.UniversalIP
+                },
+                r.UniversalIP,
+                r.Website
+            })
+            .ToList());
     }
 
     // GET RFQ/Get/5
@@ -145,10 +184,10 @@ public class RFQController : Controller
         orgItem.ContactPersonPosition = rfq.ContactPersonPosition;
         orgItem.Location = rfq.Location;
         orgItem.PhoneNumber = rfq.PhoneNumber;
-        orgItem.SelectedBundle = rfq.SelectedBundle;
+        orgItem.SelectedEditionId = rfq.SelectedEditionId;
         orgItem.Status = rfq.Status;
         orgItem.SubmissionTime = DateTime.Now;
-        orgItem.TargetedProduct = rfq.TargetedProduct;
+        orgItem.TargetedProductId = rfq.TargetedProductId;
         orgItem.UniversalIP = rfq.UniversalIP;
         orgItem.Website = rfq.Website;
 

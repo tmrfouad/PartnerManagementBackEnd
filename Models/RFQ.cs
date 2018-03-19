@@ -13,8 +13,6 @@ namespace acscustomersgatebackend.Models
         public string ContactPersonEmail { get; set; }
         public string ContactPersonMobile { get; set; }
         public string PhoneNumber { get; set; }
-        public string TargetedProduct { get; set; }
-        public string SelectedBundle { get; set; }
         public string CompanyArabicName { get; set; }
         public string Website { get; set; }
         public string Location { get; set; }
@@ -27,6 +25,10 @@ namespace acscustomersgatebackend.Models
 
         // Navigation Properties
         public ICollection<RFQAction> RFQActions { get; set; }
+        public int TargetedProductId { get; set; }
+        public Product TargetedProduct { get; set; }
+        public int SelectedEditionId { get; set; }
+        public ProductEdition SelectedEdition { get; set; }
 
         // Not Mapped Properties
         public bool SendEmail { get; set; } = false;

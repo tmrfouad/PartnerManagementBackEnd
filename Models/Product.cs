@@ -14,5 +14,6 @@ namespace acscustomersgatebackend.Models
 
         // Navigation Properties
         public ICollection<ProductEdition> ProductEditions { get; set; }
+        public ICollection<RFQ> RFQs { get; set; }
     }
 }

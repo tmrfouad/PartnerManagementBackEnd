@@ -8,11 +8,14 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<ProductEdition> entityTypeBuilder)
         {
             // Indecies
+            entityTypeBuilder.HasKey(r => new {r.ProductId, r.Id});
             entityTypeBuilder.HasIndex(r => r.Id).IsUnique();
             entityTypeBuilder.HasIndex(r => new {r.ProductId, r.EnglishName}).IsUnique();
 
             // Constraints & Datatypes
-            entityTypeBuilder.Property(r => r.Id).IsRequired();
+            entityTypeBuilder.Property(r => r.Id)
+                .IsRequired()
+                .UseSqlServerIdentityColumn();
             entityTypeBuilder.Property(r => r.EnglishName).IsRequired();
             entityTypeBuilder.Property(r => r.ArabicName).IsRequired();
             entityTypeBuilder.Property(r => r.Created)
