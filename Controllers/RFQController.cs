@@ -49,6 +49,7 @@ public class RFQController : Controller
                 r.PhoneNumber,
                 r.RFQCode,
                 r.RFQId,
+                r.SelectedEditionId,
                 SelectedEdition = new
                 {
                     r.SelectedEdition.ArabicName,
@@ -60,6 +61,7 @@ public class RFQController : Controller
                 },
                 r.Status,
                 r.SubmissionTime,
+                r.TargetedProductId,
                 TargetedProduct = new
                 {
                     r.TargetedProduct.ArabicName,
@@ -78,7 +80,49 @@ public class RFQController : Controller
     [HttpGet("{id}", Name = "GetRFQ")]
     public async Task<ActionResult> Get(int id)
     {
-        var item = _context.RFQs.SingleOrDefault(o => o.RFQId == id);
+        var item = _context.RFQs
+            .Include(r => r.TargetedProduct)
+            .Include(r => r.SelectedEdition)
+            .Select(r => new
+            {
+                r.Address,
+                r.CompanyArabicName,
+                r.CompanyEnglishName,
+                r.ContactPersonArabicName,
+                r.ContactPersonEmail,
+                r.ContactPersonEnglishName,
+                r.ContactPersonMobile,
+                r.ContactPersonPosition,
+                r.Location,
+                r.PhoneNumber,
+                r.RFQCode,
+                r.RFQId,
+                r.SelectedEditionId,
+                SelectedEdition = new
+                {
+                    r.SelectedEdition.ArabicName,
+                    r.SelectedEdition.Created,
+                    r.SelectedEdition.EnglishName,
+                    r.SelectedEdition.Id,
+                    r.SelectedEdition.ProductId,
+                    r.SelectedEdition.UniversalIP
+                },
+                r.Status,
+                r.SubmissionTime,
+                r.TargetedProductId,
+                TargetedProduct = new
+                {
+                    r.TargetedProduct.ArabicName,
+                    r.TargetedProduct.Created,
+                    r.TargetedProduct.EnglishName,
+                    r.TargetedProduct.Id,
+                    r.TargetedProduct.UniversalIP
+                },
+                r.UniversalIP,
+                r.Website
+            })
+        .SingleOrDefault(o => o.RFQId == id);
+
         if (item == null)
         {
             return await Task.Run(() => NotFound());
@@ -241,6 +285,7 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
+                    a.RepresentativeId,
                     Representative = new
                     {
                         a.Representative.Address,
@@ -300,6 +345,7 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
+                    a.RepresentativeId,
                     Representative = new
                     {
                         a.Representative.Address,
@@ -356,6 +402,7 @@ public class RFQController : Controller
                     a.ActionTime,
                     a.ActionType,
                     a.Comments,
+                    a.RepresentativeId,
                     Representative = new
                     {
                         a.Representative.Address,
