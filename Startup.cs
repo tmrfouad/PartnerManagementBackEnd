@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using ErrorHandlingMiddleware = acscustomersgatebackend.ErrorHandlingMiddleware;
 
 namespace acscustomersgatebackend
 {
@@ -90,7 +89,7 @@ namespace acscustomersgatebackend
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCors("AllowAnyOrigin");
-            app.UseMiddleware(middleware: typeof(acscustomersgatebackend.ErrorHandlingMiddleware.ErrorHandlingMiddleware));
+            app.UseMiddleware(middleware: typeof(ErrorHandlingMiddleware));
             app.UseMvc();
 
             // // ===== Create tables ======

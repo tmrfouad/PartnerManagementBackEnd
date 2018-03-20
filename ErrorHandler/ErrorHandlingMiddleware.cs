@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 
-namespace acscustomersgatebackend.ErrorHandlingMiddleware
+namespace acscustomersgatebackend
 {
     public class ErrorHandlingMiddleware
     {
@@ -34,14 +34,14 @@ namespace acscustomersgatebackend.ErrorHandlingMiddleware
         {
             var code = HttpStatusCode.InternalServerError; // 500 if unexpected
             var result = "";
-             if (exception.InnerException != null)
+            if (exception.InnerException != null)
                 result = JsonConvert.SerializeObject(exception.InnerException);
             else { result = JsonConvert.SerializeObject(exception); }
-            
+
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
             // if (!string.IsNullOrWhiteSpace(result))
-                return context.Response.WriteAsync(result);
+            return context.Response.WriteAsync(result);
         }
     }
 
