@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using ErrorHandlingMiddleware = acscustomersgatebackend.ErrorHandlingMiddleware;
 
 namespace acscustomersgatebackend
 {
@@ -73,6 +74,7 @@ namespace acscustomersgatebackend
                     };
                 });
 
+            
             // ===== MVC ========
             services.AddMvc();
         }
@@ -88,6 +90,7 @@ namespace acscustomersgatebackend
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseCors("AllowAnyOrigin");
+            app.UseMiddleware(middleware: typeof(acscustomersgatebackend.ErrorHandlingMiddleware.ErrorHandlingMiddleware));
             app.UseMvc();
 
             // // ===== Create tables ======
