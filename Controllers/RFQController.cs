@@ -30,48 +30,48 @@ public class RFQController : Controller
     #region RFQs
     // GET RFQ/Get
     [HttpGet]
-    public async Task<IEnumerable<Object>> Get()
+    public async Task<IEnumerable<RFQ>> Get()
     {
         return await Task.Run(() => _context.RFQs
             .Include(r => r.TargetedProduct)
             .Include(r => r.SelectedEdition)
-            .Select(r => new
+            .Select(r => new RFQ
             {
-                r.Address,
-                r.CompanyArabicName,
-                r.CompanyEnglishName,
-                r.ContactPersonArabicName,
-                r.ContactPersonEmail,
-                r.ContactPersonEnglishName,
-                r.ContactPersonMobile,
-                r.ContactPersonPosition,
-                r.Location,
-                r.PhoneNumber,
-                r.RFQCode,
-                r.RFQId,
-                r.SelectedEditionId,
-                SelectedEdition = new
+                Address = r.Address,
+                CompanyArabicName = r.CompanyArabicName,
+                CompanyEnglishName = r.CompanyEnglishName,
+                ContactPersonArabicName = r.ContactPersonArabicName,
+                ContactPersonEmail = r.ContactPersonEmail,
+                ContactPersonEnglishName = r.ContactPersonEnglishName,
+                ContactPersonMobile = r.ContactPersonMobile,
+                ContactPersonPosition = r.ContactPersonPosition,
+                Location = r.Location,
+                PhoneNumber = r.PhoneNumber,
+                RFQCode = r.RFQCode,
+                RFQId = r.RFQId,
+                SelectedEditionId = r.SelectedEditionId,
+                SelectedEdition = new ProductEdition
                 {
-                    r.SelectedEdition.ArabicName,
-                    r.SelectedEdition.Created,
-                    r.SelectedEdition.EnglishName,
-                    r.SelectedEdition.Id,
-                    r.SelectedEdition.ProductId,
-                    r.SelectedEdition.UniversalIP
+                    ArabicName = r.SelectedEdition.ArabicName,
+                    Created = r.SelectedEdition.Created,
+                    EnglishName = r.SelectedEdition.EnglishName,
+                    Id = r.SelectedEdition.Id,
+                    ProductId = r.SelectedEdition.ProductId,
+                    UniversalIP = r.SelectedEdition.UniversalIP
                 },
-                r.Status,
-                r.SubmissionTime,
-                r.TargetedProductId,
-                TargetedProduct = new
+                Status = r.Status,
+                SubmissionTime = r.SubmissionTime,
+                TargetedProductId = r.TargetedProductId,
+                TargetedProduct = new Product
                 {
-                    r.TargetedProduct.ArabicName,
-                    r.TargetedProduct.Created,
-                    r.TargetedProduct.EnglishName,
-                    r.TargetedProduct.Id,
-                    r.TargetedProduct.UniversalIP
+                    ArabicName = r.TargetedProduct.ArabicName,
+                    Created = r.TargetedProduct.Created,
+                    EnglishName = r.TargetedProduct.EnglishName,
+                    Id = r.TargetedProduct.Id,
+                    UniversalIP = r.TargetedProduct.UniversalIP
                 },
-                r.UniversalIP,
-                r.Website
+                UniversalIP = r.UniversalIP,
+                Website = r.Website
             })
             .ToList());
     }
@@ -83,43 +83,43 @@ public class RFQController : Controller
         var item = _context.RFQs
             .Include(r => r.TargetedProduct)
             .Include(r => r.SelectedEdition)
-            .Select(r => new
+            .Select(r => new RFQ
             {
-                r.Address,
-                r.CompanyArabicName,
-                r.CompanyEnglishName,
-                r.ContactPersonArabicName,
-                r.ContactPersonEmail,
-                r.ContactPersonEnglishName,
-                r.ContactPersonMobile,
-                r.ContactPersonPosition,
-                r.Location,
-                r.PhoneNumber,
-                r.RFQCode,
-                r.RFQId,
-                r.SelectedEditionId,
-                SelectedEdition = new
+                Address = r.Address,
+                CompanyArabicName = r.CompanyArabicName,
+                CompanyEnglishName = r.CompanyEnglishName,
+                ContactPersonArabicName = r.ContactPersonArabicName,
+                ContactPersonEmail = r.ContactPersonEmail,
+                ContactPersonEnglishName = r.ContactPersonEnglishName,
+                ContactPersonMobile = r.ContactPersonMobile,
+                ContactPersonPosition = r.ContactPersonPosition,
+                Location = r.Location,
+                PhoneNumber = r.PhoneNumber,
+                RFQCode = r.RFQCode,
+                RFQId = r.RFQId,
+                SelectedEditionId = r.SelectedEditionId,
+                SelectedEdition = new ProductEdition
                 {
-                    r.SelectedEdition.ArabicName,
-                    r.SelectedEdition.Created,
-                    r.SelectedEdition.EnglishName,
-                    r.SelectedEdition.Id,
-                    r.SelectedEdition.ProductId,
-                    r.SelectedEdition.UniversalIP
+                    ArabicName = r.SelectedEdition.ArabicName,
+                    Created = r.SelectedEdition.Created,
+                    EnglishName = r.SelectedEdition.EnglishName,
+                    Id = r.SelectedEdition.Id,
+                    ProductId = r.SelectedEdition.ProductId,
+                    UniversalIP = r.SelectedEdition.UniversalIP
                 },
-                r.Status,
-                r.SubmissionTime,
-                r.TargetedProductId,
-                TargetedProduct = new
+                Status = r.Status,
+                SubmissionTime = r.SubmissionTime,
+                TargetedProductId = r.TargetedProductId,
+                TargetedProduct = new Product
                 {
-                    r.TargetedProduct.ArabicName,
-                    r.TargetedProduct.Created,
-                    r.TargetedProduct.EnglishName,
-                    r.TargetedProduct.Id,
-                    r.TargetedProduct.UniversalIP
+                    ArabicName = r.TargetedProduct.ArabicName,
+                    Created = r.TargetedProduct.Created,
+                    EnglishName = r.TargetedProduct.EnglishName,
+                    Id = r.TargetedProduct.Id,
+                    UniversalIP = r.TargetedProduct.UniversalIP
                 },
-                r.UniversalIP,
-                r.Website
+                UniversalIP = r.UniversalIP,
+                Website = r.Website
             })
         .SingleOrDefault(o => o.RFQId == id);
 
@@ -200,7 +200,52 @@ public class RFQController : Controller
             }
         }
 
-        return await Task.Run(() => new NoContentResult());
+        var _rfq = _context.RFQs
+            .Where(r => r.RFQId == rfq.RFQId)
+            .Include(r => r.SelectedEdition)
+            .Include(r => r.TargetedProduct)
+            .SingleOrDefault();
+
+        var retRfq = new RFQ
+        {
+            Address = _rfq.Address,
+            CompanyArabicName = _rfq.CompanyArabicName,
+            CompanyEnglishName = _rfq.CompanyEnglishName,
+            ContactPersonArabicName = _rfq.ContactPersonArabicName,
+            ContactPersonEmail = _rfq.ContactPersonEmail,
+            ContactPersonEnglishName = _rfq.ContactPersonEnglishName,
+            ContactPersonMobile = _rfq.ContactPersonMobile,
+            ContactPersonPosition = _rfq.ContactPersonPosition,
+            Location = _rfq.Location,
+            PhoneNumber = _rfq.PhoneNumber,
+            RFQCode = _rfq.RFQCode,
+            RFQId = _rfq.RFQId,
+            SelectedEdition = new ProductEdition
+            {
+                ArabicName = _rfq.SelectedEdition.ArabicName,
+                Created = _rfq.SelectedEdition.Created,
+                EnglishName = _rfq.SelectedEdition.EnglishName,
+                Id = _rfq.SelectedEdition.Id,
+                ProductId = _rfq.SelectedEdition.ProductId,
+                UniversalIP = _rfq.SelectedEdition.UniversalIP
+            },
+            SelectedEditionId = _rfq.SelectedEditionId,
+            Status = _rfq.Status,
+            SubmissionTime = _rfq.SubmissionTime,
+            TargetedProduct = new Product
+            {
+                ArabicName = _rfq.TargetedProduct.ArabicName,
+                Created = _rfq.TargetedProduct.Created,
+                EnglishName = _rfq.TargetedProduct.EnglishName,
+                Id = _rfq.TargetedProduct.Id,
+                UniversalIP = _rfq.TargetedProduct.UniversalIP,
+            },
+            TargetedProductId = _rfq.TargetedProductId,
+            UniversalIP = _rfq.UniversalIP,
+            Website = _rfq.Website
+        };
+
+        return await Task.Run(() => new ObjectResult(retRfq));
     }
 
     // PUT RFQ/Put/5
@@ -238,7 +283,52 @@ public class RFQController : Controller
         _context.RFQs.Update(orgItem);
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(orgItem));
+        var _rfq = _context.RFQs
+            .Where(r => r.RFQId == rfq.RFQId)
+            .Include(r => r.SelectedEdition)
+            .Include(r => r.TargetedProduct)
+            .SingleOrDefault();
+
+        var retRfq = new RFQ
+        {
+            Address = _rfq.Address,
+            CompanyArabicName = _rfq.CompanyArabicName,
+            CompanyEnglishName = _rfq.CompanyEnglishName,
+            ContactPersonArabicName = _rfq.ContactPersonArabicName,
+            ContactPersonEmail = _rfq.ContactPersonEmail,
+            ContactPersonEnglishName = _rfq.ContactPersonEnglishName,
+            ContactPersonMobile = _rfq.ContactPersonMobile,
+            ContactPersonPosition = _rfq.ContactPersonPosition,
+            Location = _rfq.Location,
+            PhoneNumber = _rfq.PhoneNumber,
+            RFQCode = _rfq.RFQCode,
+            RFQId = _rfq.RFQId,
+            SelectedEdition = new ProductEdition
+            {
+                ArabicName = _rfq.SelectedEdition.ArabicName,
+                Created = _rfq.SelectedEdition.Created,
+                EnglishName = _rfq.SelectedEdition.EnglishName,
+                Id = _rfq.SelectedEdition.Id,
+                ProductId = _rfq.SelectedEdition.ProductId,
+                UniversalIP = _rfq.SelectedEdition.UniversalIP
+            },
+            SelectedEditionId = _rfq.SelectedEditionId,
+            Status = _rfq.Status,
+            SubmissionTime = _rfq.SubmissionTime,
+            TargetedProduct = new Product
+            {
+                ArabicName = _rfq.TargetedProduct.ArabicName,
+                Created = _rfq.TargetedProduct.Created,
+                EnglishName = _rfq.TargetedProduct.EnglishName,
+                Id = _rfq.TargetedProduct.Id,
+                UniversalIP = _rfq.TargetedProduct.UniversalIP,
+            },
+            TargetedProductId = _rfq.TargetedProductId,
+            UniversalIP = _rfq.UniversalIP,
+            Website = _rfq.Website
+        };
+
+        return await Task.Run(() => new ObjectResult(retRfq));
     }
 
     // DELETE RFQ/Delete/5
@@ -254,7 +344,7 @@ public class RFQController : Controller
         _context.RFQs.Remove(item);
         _context.SaveChanges();
 
-        return await Task.Run(() => new NoContentResult());
+        return await Task.Run(() => new ObjectResult(item));
     }
     #endregion
 
@@ -277,43 +367,37 @@ public class RFQController : Controller
         }
 
         var rfqAction = item.RFQActions
-            .Select(a =>
+            .Select(a => new RFQAction
             {
-                return new
+                ActionCode = a.ActionCode,
+                ActionTime = a.ActionTime,
+                ActionType = a.ActionType,
+                Comments = a.Comments,
+                RepresentativeId = a.RepresentativeId,
+                Representative = new Representative
                 {
-                    a.ActionCode,
-                    a.ActionTime,
-                    a.ActionType,
-                    a.Comments,
-                    a.RepresentativeId,
-                    Representative = new
-                    {
-                        a.Representative.Address,
-                        a.Representative.Continuous,
-                        a.Representative.Created,
-                        a.Representative.DateOfBirth,
-                        a.Representative.Id,
-                        a.Representative.Name,
-                        a.Representative.PersonalPhone,
-                        a.Representative.Phone,
-                        a.Representative.Position,
-                        a.Representative.UniversalIP
-                    },
-                    RFQActionAtts = a.RFQActionAtts.Select(att =>
-                    {
-                        return new
-                        {
-                            att.FileName,
-                            att.FileUrl,
-                            att.FileType,
-                            att.Value
-                        };
-                    }),
-                    a.Id,
-                    a.RFQId,
-                    a.SubmissionTime,
-                    a.UniversalIP
-                };
+                    Address = a.Representative.Address,
+                    Continuous = a.Representative.Continuous,
+                    Created = a.Representative.Created,
+                    DateOfBirth = a.Representative.DateOfBirth,
+                    Id = a.Representative.Id,
+                    Name = a.Representative.Name,
+                    PersonalPhone = a.Representative.PersonalPhone,
+                    Phone = a.Representative.Phone,
+                    Position = a.Representative.Position,
+                    UniversalIP = a.Representative.UniversalIP
+                },
+                RFQActionAtts = a.RFQActionAtts.Select(att => new RFQActionAtt
+                {
+                    FileName = att.FileName,
+                    FileUrl = att.FileUrl,
+                    FileType = att.FileType,
+                    Value = att.Value
+                }).ToList(),
+                Id = a.Id,
+                RFQId = a.RFQId,
+                SubmissionTime = a.SubmissionTime,
+                UniversalIP = a.UniversalIP
             }).SingleOrDefault(a => a.ActionTime == item.RFQActions.Max(a1 => a1.ActionTime));
 
         return await Task.Run(() => new ObjectResult(rfqAction));
@@ -337,40 +421,37 @@ public class RFQController : Controller
         }
 
         var rfqActions = item.RFQActions
-            .Select(a =>
+            .Select(a => new RFQAction
             {
-                return new
+                ActionCode = a.ActionCode,
+                ActionTime = a.ActionTime,
+                ActionType = a.ActionType,
+                Comments = a.Comments,
+                RepresentativeId = a.RepresentativeId,
+                Representative = new Representative
                 {
-                    a.ActionCode,
-                    a.ActionTime,
-                    a.ActionType,
-                    a.Comments,
-                    a.RepresentativeId,
-                    Representative = new
-                    {
-                        a.Representative.Address,
-                        a.Representative.Continuous,
-                        a.Representative.Created,
-                        a.Representative.DateOfBirth,
-                        a.Representative.Id,
-                        a.Representative.Name,
-                        a.Representative.PersonalPhone,
-                        a.Representative.Phone,
-                        a.Representative.Position,
-                        a.Representative.UniversalIP
-                    },
-                    RFQActionAtts = a.RFQActionAtts.Select(att => new
-                    {
-                        att.FileName,
-                        att.FileUrl,
-                        att.FileType,
-                        att.Value
-                    }),
-                    a.Id,
-                    a.RFQId,
-                    a.SubmissionTime,
-                    a.UniversalIP
-                };
+                    Address = a.Representative.Address,
+                    Continuous = a.Representative.Continuous,
+                    Created = a.Representative.Created,
+                    DateOfBirth = a.Representative.DateOfBirth,
+                    Id = a.Representative.Id,
+                    Name = a.Representative.Name,
+                    PersonalPhone = a.Representative.PersonalPhone,
+                    Phone = a.Representative.Phone,
+                    Position = a.Representative.Position,
+                    UniversalIP = a.Representative.UniversalIP
+                },
+                RFQActionAtts = a.RFQActionAtts.Select(att => new RFQActionAtt
+                {
+                    FileName = att.FileName,
+                    FileUrl = att.FileUrl,
+                    FileType = att.FileType,
+                    Value = att.Value
+                }).ToList(),
+                Id = a.Id,
+                RFQId = a.RFQId,
+                SubmissionTime = a.SubmissionTime,
+                UniversalIP = a.UniversalIP
             });
 
         return await Task.Run(() => rfqActions);
@@ -393,51 +474,54 @@ public class RFQController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        var rfqActions = item.RFQActions
-            .Select(a =>
+        var rfqAction = item.RFQActions
+            .Select(a => new RFQAction
             {
-                return new
+                ActionCode = a.ActionCode,
+                ActionTime = a.ActionTime,
+                ActionType = a.ActionType,
+                Comments = a.Comments,
+                RepresentativeId = a.RepresentativeId,
+                Representative = new Representative
                 {
-                    a.ActionCode,
-                    a.ActionTime,
-                    a.ActionType,
-                    a.Comments,
-                    a.RepresentativeId,
-                    Representative = new
-                    {
-                        a.Representative.Address,
-                        a.Representative.Continuous,
-                        a.Representative.Created,
-                        a.Representative.DateOfBirth,
-                        a.Representative.Id,
-                        a.Representative.Name,
-                        a.Representative.PersonalPhone,
-                        a.Representative.Phone,
-                        a.Representative.Position,
-                        a.Representative.UniversalIP
-                    },
-                    RFQActionAtts = a.RFQActionAtts.Select(att => new
-                    {
-                        att.FileName,
-                        att.FileUrl,
-                        att.FileType,
-                        att.Value
-                    }),
-                    a.Id,
-                    a.RFQId,
-                    a.SubmissionTime,
-                    a.UniversalIP
-                };
-            });
+                    Address = a.Representative.Address,
+                    Continuous = a.Representative.Continuous,
+                    Created = a.Representative.Created,
+                    DateOfBirth = a.Representative.DateOfBirth,
+                    Id = a.Representative.Id,
+                    Name = a.Representative.Name,
+                    PersonalPhone = a.Representative.PersonalPhone,
+                    Phone = a.Representative.Phone,
+                    Position = a.Representative.Position,
+                    UniversalIP = a.Representative.UniversalIP
+                },
+                RFQActionAtts = a.RFQActionAtts.Select(att => new RFQActionAtt
+                {
+                    FileName = att.FileName,
+                    FileUrl = att.FileUrl,
+                    FileType = att.FileType,
+                    Value = att.Value
+                }).ToList(),
+                Id = a.Id,
+                RFQId = a.RFQId,
+                SubmissionTime = a.SubmissionTime,
+                UniversalIP = a.UniversalIP
+            }).SingleOrDefault(a => a.RFQId == id && a.Id == actionId);
 
-        return await Task.Run(() => new ObjectResult(rfqActions));
+        return await Task.Run(() => new ObjectResult(rfqAction));
     }
 
     // POST RFQ/AddStatus/5
     [HttpPost("{id}", Name = "AddRFQAction")]
     public async Task<ActionResult> AddStatus(int id, [FromBody]RFQAction action)
     {
-        var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).FirstOrDefault();
+        var item = _context.RFQs
+            .Where(o => o.RFQId == id)
+            .Include(r => r.RFQActions)
+            .ThenInclude(a => a.Representative)
+            .Include(r => r.RFQActions)
+            .ThenInclude(a => a.RFQActionAtts)
+            .FirstOrDefault();
 
         if (item == null)
         {
@@ -451,7 +535,40 @@ public class RFQController : Controller
         item.RFQActions.Add(action);
         _context.SaveChanges();
 
-        return await Task.Run(() => new NoContentResult());
+        var retAction = new
+        {
+            action.ActionCode,
+            action.ActionTime,
+            action.ActionType,
+            action.Comments,
+            action.Id,
+            action.RepresentativeId,
+            Representative = new
+            {
+                action.Representative?.Address,
+                action.Representative?.Continuous,
+                action.Representative?.Created,
+                action.Representative?.DateOfBirth,
+                action.Representative?.Id,
+                action.Representative?.Name,
+                action.Representative?.PersonalPhone,
+                action.Representative?.Phone,
+                action.Representative?.Position,
+                action.Representative?.UniversalIP
+            },
+            RFQActionAtts = action.RFQActionAtts?.Select(att => new
+            {
+                att.FileName,
+                att.FileUrl,
+                att.FileType,
+                att.Value
+            }),
+            action.RFQId,
+            action.SubmissionTime,
+            action.UniversalIP
+        };
+
+        return await Task.Run(() => new ObjectResult(retAction));
     }
 
     // PUT RFQ/UpdateStatus/5/1
@@ -501,10 +618,42 @@ public class RFQController : Controller
         }
 
         orgAction.SubmissionTime = DateTime.Now;
-
         _context.SaveChanges();
 
-        return await Task.Run(() => new NoContentResult());
+        var retAction = new
+        {
+            action.ActionCode,
+            action.ActionTime,
+            action.ActionType,
+            action.Comments,
+            action.Id,
+            action.RepresentativeId,
+            Representative = new
+            {
+                action.Representative.Address,
+                action.Representative.Continuous,
+                action.Representative.Created,
+                action.Representative.DateOfBirth,
+                action.Representative.Id,
+                action.Representative.Name,
+                action.Representative.PersonalPhone,
+                action.Representative.Phone,
+                action.Representative.Position,
+                action.Representative.UniversalIP
+            },
+            RFQActionAtts = action.RFQActionAtts?.Select(att => new
+            {
+                att.FileName,
+                att.FileUrl,
+                att.FileType,
+                att.Value
+            }),
+            action.RFQId,
+            action.SubmissionTime,
+            action.UniversalIP
+        };
+
+        return await Task.Run(() => new ObjectResult(retAction));
     }
 
     // POST RFQ/DeleteStatus/5/1
@@ -533,7 +682,7 @@ public class RFQController : Controller
         item.RFQActions.Remove(action);
         _context.SaveChanges();
 
-        return await Task.Run(() => new NoContentResult());
+        return await Task.Run(() => new ObjectResult(action));
     }
     #endregion
 }
