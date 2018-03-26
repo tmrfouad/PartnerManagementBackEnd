@@ -12,9 +12,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180326071226_ChangeRepDeleteRuleToNoAction")]
+    partial class ChangeRepDeleteRuleToNoAction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,6 +225,18 @@ namespace acscustomersgatebackend.Migrations
                     b.HasKey("RFQActionId", "FileName");
 
                     b.ToTable("RFQActionAtt");
+                });
+
+            modelBuilder.Entity("acscustomersgatebackend.Models.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tests");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

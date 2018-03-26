@@ -30,7 +30,8 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
                 .WithMany(p => p.RFQs)
                 .HasForeignKey(r => r.TargetedProductId)
                 .OnDelete(DeleteBehavior.Restrict);
-            entityTypeBuilder.HasOne(r => r.SelectedEdition)
+            entityTypeBuilder
+                .HasOne(r => r.SelectedEdition)
                 .WithMany(e => e.RFQs)
                 .HasForeignKey(r => new { r.TargetedProductId, r.SelectedEditionId })
                 .OnDelete(DeleteBehavior.Restrict);

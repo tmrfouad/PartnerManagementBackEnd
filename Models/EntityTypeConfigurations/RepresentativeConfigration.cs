@@ -17,7 +17,8 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
             entityTypeBuilder
                 .HasMany<RFQAction>(rep => rep.RFQActions)
                 .WithOne(a => a.Representative)
-                .HasForeignKey(a => a.RepresentativeId);
+                .HasForeignKey(a => a.RepresentativeId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
