@@ -64,7 +64,7 @@ public class ProductController : Controller
         _context.Products.Add(product);
         _context.SaveChanges();
 
-        return await Task.Run(() => new NoContentResult());
+        return await Task.Run(() => new ObjectResult(product));
     }
 
     // PUT Product/Put/5

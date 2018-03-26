@@ -23,7 +23,7 @@ public class RepController : Controller
     }
 
     [HttpPost]
-    public ActionResult Post([FromBody]Representative Repitem)
+    public async Task<ActionResult> Post([FromBody]Representative Repitem)
     {
         try
         {
@@ -34,7 +34,7 @@ public class RepController : Controller
         _db.Representatives.Add(Repitem);
         _db.SaveChanges();
 
-            return new NoContentResult();
+             return await Task.Run(() => new ObjectResult(Repitem));
         }
         catch
         {
@@ -50,12 +50,12 @@ public class RepController : Controller
     }
 
     [HttpGet("{id}")]
-    public Representative get(int id)
+    public async Task<Representative> get(int id)
     {
         try
         {
             var rep = _db.Representatives.SingleOrDefault(x => x.Id == id);
-            return rep;
+            return await Task.Run(() => rep);
         }
         catch
         {
@@ -64,7 +64,7 @@ public class RepController : Controller
     }
 
     [HttpPut("{id}")]
-    public ActionResult Put(int id,[FromBody] Representative representative)
+    public async Task<ActionResult> Put(int id,[FromBody] Representative representative)
     {
         try
         {
@@ -86,7 +86,7 @@ public class RepController : Controller
             rep.Created = DateTime.Now;
             rep.UniversalIP = representative.UniversalIP;
             _db.SaveChanges();
-            return new ObjectResult(rep);
+            return await Task.Run(() => new ObjectResult(rep));
         }
         catch
         {
@@ -96,7 +96,7 @@ public class RepController : Controller
     }
 
     [HttpDelete("{id}")]
-    public ActionResult Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
         try
         {
@@ -107,7 +107,7 @@ public class RepController : Controller
             _db.Representatives.Remove(representative);
             _db.SaveChanges();
 
-            return new NoContentResult();
+            return await Task.Run(() => new NoContentResult());
         }
         catch
         {
