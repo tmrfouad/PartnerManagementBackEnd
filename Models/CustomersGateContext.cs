@@ -15,6 +15,7 @@ namespace acscustomersgatebackend.Models
         public DbSet<Representative> Representatives { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<EmailSender> EmailSenders { get; set; }
 
         public CustomersGateContext(DbContextOptions<CustomersGateContext> options) : base(options)
         {
@@ -29,6 +30,7 @@ namespace acscustomersgatebackend.Models
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new ProductEditionConfiguration());
             modelBuilder.ApplyConfiguration(new EmailTemplateConfiguration());
+            modelBuilder.ApplyConfiguration(new EmailSenderConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }
