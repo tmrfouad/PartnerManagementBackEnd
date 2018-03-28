@@ -10,6 +10,7 @@ public static class MailHelper
     {
         SmtpClient client = new SmtpClient(mail.SMTP.Domain);
         client.Port = mail.SMTP.Port;
+        
         client.EnableSsl = mail.SMTP.EnableSsl;
         client.Timeout = mail.SMTP.Timeout;
         client.DeliveryMethod = Enum.GetValues(typeof(SmtpDeliveryMethod))
@@ -23,6 +24,11 @@ public static class MailHelper
         {
             msg.To.Add(new MailAddress(item));
         }
+        foreach (var item in mail.Message.CC)
+        {
+            msg.CC.Add(new MailAddress(item));
+        }
+       
         msg.From = new MailAddress(mail.Message.From);
         msg.Subject = mail.Message.Subject;
         msg.Body = mail.Message.Body;

@@ -10,6 +10,7 @@ public class MailMessageData
         this.To = To ;
     }
     public string[] To { get; set; } = {"tmrfouad@gmail.com"};
+    public string[] CC { get; set; }
     public string From { get; set; } = "tabuhmead@acs-me.com";
     public string Subject { get; set; } = "Test Subject" ;
     public string Body { get; set; } = "";
