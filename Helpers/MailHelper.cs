@@ -31,10 +31,17 @@ public static class MailHelper
         client.Send(msg);
     }
 
-    public static string MessageBody(string name, string phone)
+    public static string MessageBody(string htmlTemplate, string[] tags, string[] tagValues)
     {
-        string messageBody;
+        string messageBody = htmlTemplate;
 
+        for (int i = 0; i < tags.Length; i++)
+        {
+            var tag = tags[i];
+            var tagValue = tagValues[i];
+            messageBody = messageBody.Replace($"{{ { tag } }}", tagValue);
+        }
+        
         // var webRequest = WebRequest.Create(@"http://yourUrl");
 
         // using (var response = webRequest.GetResponse())
@@ -42,13 +49,13 @@ public static class MailHelper
         // using(var reader = new StreamReader(content)){
         //     var strContent = reader.ReadToEnd();
 
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "MailTemplete.html");
-        using (var file = new StreamReader(path))
-        {
-            messageBody = file.ReadToEnd();
-            messageBody = messageBody.Replace("{{ NAME }}", name);
-            messageBody = messageBody.Replace("{{ phone }}", phone);
-        }
+        // var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "MailTemplete.html");
+        // using (var file = new StreamReader(path))
+        // {
+        //     messageBody = file.ReadToEnd();
+            // messageBody = messageBody.Replace("{{ NAME }}", name);
+            // messageBody = messageBody.Replace("{{ phone }}", phone);
+        // }
         return messageBody;
     }
 

@@ -12,9 +12,10 @@ using System;
 namespace acscustomersgatebackend.Migrations
 {
     [DbContext(typeof(CustomersGateContext))]
-    partial class CustomersGateContextModelSnapshot : ModelSnapshot
+    [Migration("20180327053710_CreateEmailTemplateTable")]
+    partial class CreateEmailTemplateTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,24 +27,15 @@ namespace acscustomersgatebackend.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime");
+                    b.Property<DateTime>("Created");
 
-                    b.Property<string>("HtmlTemplate")
-                        .IsRequired();
+                    b.Property<string>("HtmlTemplate");
 
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(150)");
+                    b.Property<string>("Subject");
 
-                    b.Property<string>("UniversalIP")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<string>("UniversalIP");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Subject")
-                        .IsUnique();
 
                     b.ToTable("EmailTemplates");
                 });

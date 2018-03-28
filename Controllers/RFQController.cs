@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Net;
+using System.IO;
 
 [Authorize]
 [Route("[controller]/[action]")]
@@ -166,11 +168,20 @@ public class RFQController : Controller
             bool sent = false;
             try
             {
+                var htmlTemplate = "";
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "MailTemplete.html");
+                using (var file = new StreamReader(path))
+                {
+                    htmlTemplate = file.ReadToEnd();
+                }
+
+                string[] tags = new[] { "Name", "phone" };
+                string[] tagValues = new[] { rfq.ContactPersonEnglishName, rfq.ContactPersonMobile };
                 MailHelper.sendMail(new MailData
                 {
                     Message = new MailMessageData(new[] { rfq.ContactPersonEmail })
                     {
-                        Body = MailHelper.MessageBody(rfq.ContactPersonEnglishName, rfq.ContactPersonMobile)
+                        Body = MailHelper.MessageBody(htmlTemplate, tags, tagValues)
                     },
                     SMTP = new SmtpData()
                 });
@@ -246,6 +257,71 @@ public class RFQController : Controller
         };
 
         return await Task.Run(() => new ObjectResult(retRfq));
+    }
+
+    // POST rfq/sendMail/1/1
+    [HttpPost("{id}/{templateId}")]
+    public async Task<ActionResult> SendMail(int id, int templateId)
+    {
+        var mailTemp = _context.EmailTemplates.SingleOrDefault(e => e.Id == templateId);
+
+        if (mailTemp == null)
+        {
+            await Task.Run(() => NotFound());
+        }
+
+        var rfq = _context.RFQs.SingleOrDefault(e => e.RFQId == id);
+
+        if (rfq == null)
+        {
+            await Task.Run(() => NotFound());
+        }
+
+        string[] tags = new[]
+        {
+            "Address",
+            "CompanyEnglishName",
+            "ContactPersonEmail",
+            "ContactPersonMobile",
+            "ContactPersonEnglishName",
+            "ContactPersonPosition",
+            "Location",
+            "PhoneNumber",
+            "RFQCode",
+            "SelectedEdition",
+            "Status",
+            "TargetedProduct",
+            "Website"
+        };
+        string[] tagValues = new[]
+        {
+            rfq.Address,
+            rfq.CompanyEnglishName,
+            rfq.ContactPersonEmail,
+            rfq.ContactPersonEnglishName,
+            rfq.ContactPersonMobile,
+            rfq.ContactPersonPosition,
+            rfq.Location,
+            rfq.PhoneNumber,
+            rfq.RFQCode,
+            rfq.SelectedEdition.EnglishName,
+            rfq.Status.ToString(),
+            rfq.TargetedProduct.EnglishName,
+            rfq.Website
+        };
+        var mail = new MailData
+        {
+            Message = new MailMessageData(new[] { rfq.ContactPersonEmail })
+            {
+                Subject = mailTemp.Subject,
+                Body = MailHelper.MessageBody(mailTemp.HtmlTemplate, tags, tagValues)
+            },
+            SMTP = new SmtpData()
+        };
+
+        MailHelper.sendMail(mail);
+
+        return await Task.Run(() => new ObjectResult(mail));
     }
 
     // PUT RFQ/Put/5

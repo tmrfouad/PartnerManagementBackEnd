@@ -8,17 +8,17 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Product> entityTypeBuilder)
         {
             // Indecies
-            entityTypeBuilder.HasIndex(r => r.Id).IsUnique();
-            entityTypeBuilder.HasIndex(r => r.EnglishName).IsUnique();
+            entityTypeBuilder.HasIndex(p => p.Id).IsUnique();
+            entityTypeBuilder.HasIndex(p => p.EnglishName).IsUnique();
 
             // Constraints & Datatypes
-            entityTypeBuilder.Property(r => r.Id).IsRequired();
-            entityTypeBuilder.Property(r => r.EnglishName).IsRequired();
-            entityTypeBuilder.Property(r => r.ArabicName).IsRequired();
-            entityTypeBuilder.Property(r => r.Created)
+            entityTypeBuilder.Property(p => p.Id).IsRequired();
+            entityTypeBuilder.Property(p => p.EnglishName).IsRequired();
+            entityTypeBuilder.Property(p => p.ArabicName).IsRequired();
+            entityTypeBuilder.Property(p => p.Created)
                 .IsRequired()
                 .HasColumnType("datetime");
-            entityTypeBuilder.Property(r => r.UniversalIP).IsRequired();
+            entityTypeBuilder.Property(p => p.UniversalIP).IsRequired();
         }
     }
 }
