@@ -85,6 +85,7 @@ public class RepController : Controller
             rep.Position = representative.Position;
             rep.Created = DateTime.Now;
             rep.UniversalIP = representative.UniversalIP;
+            rep.Email = representative.Email;
             _db.SaveChanges();
             return await Task.Run(() => new ObjectResult(rep));
         }

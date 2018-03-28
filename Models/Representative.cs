@@ -13,6 +13,7 @@ namespace acscustomersgatebackend.Models
         public string Address { get; set; }
         public string Position { get; set; }
         public bool? Continuous { get; set; }
+        public string Email { get; set; }
 
         public DateTime Created { get; set; }
         public string UniversalIP { get; set; }

@@ -8,10 +8,20 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Representative> entityTypeBuilder)
         {
             // Constraints & Datatypes
-            entityTypeBuilder.Property(x => x.Name).IsRequired();
-            entityTypeBuilder.Property(x => x.Created).HasColumnType("datetime");
-            entityTypeBuilder.Property(x => x.UniversalIP).IsRequired();
-            entityTypeBuilder.Property(x => x.Address).IsRequired();
+            entityTypeBuilder.Property(x => x.Name)
+                .IsRequired()
+                .HasColumnType("nvarchar(150)");
+            entityTypeBuilder.Property(x => x.Created)
+                .HasColumnType("datetime");
+            entityTypeBuilder.Property(x => x.UniversalIP)
+                .IsRequired()
+                .HasColumnType("nvarchar(20)");
+            entityTypeBuilder.Property(x => x.Address)
+                .IsRequired()
+                .HasColumnType("nvarchar(250)");
+            entityTypeBuilder.Property(x => x.Email)
+                .IsRequired()
+                .HasColumnType("nvarchar(150)");
 
             // Relations
             entityTypeBuilder
