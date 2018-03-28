@@ -19,6 +19,8 @@ namespace acscustomersgatebackend.Models.EntityTypeConfigurations
             entityTypeBuilder.Property(x => x.Address)
                 .IsRequired()
                 .HasColumnType("nvarchar(250)");
+            entityTypeBuilder.Property(x => x.DateOfBirth)
+                .HasColumnType("datetime");
             entityTypeBuilder.Property(x => x.Email)
                 .IsRequired()
                 .HasColumnType("nvarchar(150)");
