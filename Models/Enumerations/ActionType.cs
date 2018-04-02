@@ -5,7 +5,7 @@ namespace acscustomersgatebackend.Models.Enumerations
         Visit = 1,
         Meeting = 2,
         PhoneCall = 3,
-        VideoConference = 4,
+        // VideoConference = 4,
         EmailMessage = 5
     }
 }
