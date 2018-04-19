@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
+using AutoMapper;
+using PartnerManagement.Models.DTOs;
 
 [Route("[controller]/[action]")]
 [EnableCors("AllowAnyOrigin")]
@@ -17,30 +19,33 @@ using System.Net;
 public class MailSenderController : Controller
 {
     CustomersGateContext _context;
+    IMapper _mapper;
 
-    public MailSenderController(CustomersGateContext context)
+    public MailSenderController(CustomersGateContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     // GET mail/get
     [HttpGet]
-    public async Task<IEnumerable<EmailSender>> Get()
+    public async Task<IEnumerable<EmailSenderDTO>> Get()
     {
-        return await Task.Run(() => _context.EmailSenders.ToList());
+        var items = _mapper.Map<IEnumerable<EmailSenderDTO>>(_context.EmailSenders.ToList());
+        return await Task.Run(() => items);
     }
 
     // GET mail/getById/1
     [HttpGet("{id}")]
-    public async Task<EmailSender> GetById(int id)
+    public async Task<EmailSenderDTO> GetById(int id)
     {
-        return await Task.Run(() => _context.EmailSenders
-            .SingleOrDefault(e => e.Id == id));
+        var item = _mapper.Map<EmailSenderDTO>(_context.EmailSenders.SingleOrDefault(e => e.Id == id));
+        return await Task.Run(() => item);
     }
 
     // POST mail/post
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody]EmailSender sender)
+    public async Task<ActionResult> Post([FromBody]EmailSenderDTO sender)
     {
         if (sender == null)
         {
@@ -48,7 +53,9 @@ public class MailSenderController : Controller
         }
 
         sender.Created = DateTime.Now;
-        _context.EmailSenders.Add(sender);
+
+        var _sender = _mapper.Map<EmailSender>(sender);
+        _context.EmailSenders.Add(_sender);
         _context.SaveChanges();
 
         return await Task.Run(() => new ObjectResult(sender));
@@ -56,14 +63,14 @@ public class MailSenderController : Controller
 
     // PUT mail/put/1
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, [FromBody]EmailSender sender)
+    public async Task<ActionResult> Put(int id, [FromBody]EmailSenderDTO sender)
     {
         if (sender == null)
         {
             return await Task.Run(() => BadRequest());
         }
 
-        EmailSender orgSender = _context.EmailSenders
+        var orgSender = _context.EmailSenders
             .SingleOrDefault(e => e.Id == id);
 
         if (orgSender == null)
@@ -71,14 +78,10 @@ public class MailSenderController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        orgSender.Password = sender.Password;
-        orgSender.Email = sender.Email;
-        orgSender.UniversalIP = sender.UniversalIP;
-
-        _context.EmailSenders.Update(orgSender);
+        orgSender = _mapper.Map(sender, orgSender);
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(orgSender));
+        return await Task.Run(() => new ObjectResult(sender));
     }
 
     // PUT mail/delete/1
@@ -93,9 +96,10 @@ public class MailSenderController : Controller
             return await Task.Run(() => NotFound());
         }
 
+        var senderDto = _mapper.Map<EmailSenderDTO>(sender);
         _context.EmailSenders.Remove(sender);
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(sender));
+        return await Task.Run(() => new ObjectResult(senderDto));
     }
 }

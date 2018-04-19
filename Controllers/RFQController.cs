@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Net;
 using System.IO;
+using AutoMapper;
+using PartnerManagement.Models.DTOs;
 
 [Authorize]
 [Route("[controller]/[action]")]
@@ -17,10 +19,12 @@ using System.IO;
 public class RFQController : Controller
 {
     CustomersGateContext _context;
+    IMapper _mapper;
 
-    public RFQController(CustomersGateContext context)
+    public RFQController(CustomersGateContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     [AllowAnonymous]
@@ -32,50 +36,14 @@ public class RFQController : Controller
     #region RFQs
     // GET RFQ/Get
     [HttpGet]
-    public async Task<IEnumerable<RFQ>> Get()
+    public async Task<IEnumerable<RFQDTO>> Get()
     {
-        return await Task.Run(() => _context.RFQs
+        var items = _context.RFQs
             .Include(r => r.TargetedProduct)
             .Include(r => r.SelectedEdition)
-            .Select(r => new RFQ
-            {
-                Address = r.Address,
-                CompanyArabicName = r.CompanyArabicName,
-                CompanyEnglishName = r.CompanyEnglishName,
-                ContactPersonArabicName = r.ContactPersonArabicName,
-                ContactPersonEmail = r.ContactPersonEmail,
-                ContactPersonEnglishName = r.ContactPersonEnglishName,
-                ContactPersonMobile = r.ContactPersonMobile,
-                ContactPersonPosition = r.ContactPersonPosition,
-                Location = r.Location,
-                PhoneNumber = r.PhoneNumber,
-                RFQCode = r.RFQCode,
-                RFQId = r.RFQId,
-                SelectedEditionId = r.SelectedEditionId,
-                SelectedEdition = new ProductEdition
-                {
-                    ArabicName = r.SelectedEdition.ArabicName,
-                    Created = r.SelectedEdition.Created,
-                    EnglishName = r.SelectedEdition.EnglishName,
-                    Id = r.SelectedEdition.Id,
-                    ProductId = r.SelectedEdition.ProductId,
-                    UniversalIP = r.SelectedEdition.UniversalIP
-                },
-                Status = r.Status,
-                SubmissionTime = r.SubmissionTime,
-                TargetedProductId = r.TargetedProductId,
-                TargetedProduct = new Product
-                {
-                    ArabicName = r.TargetedProduct.ArabicName,
-                    Created = r.TargetedProduct.Created,
-                    EnglishName = r.TargetedProduct.EnglishName,
-                    Id = r.TargetedProduct.Id,
-                    UniversalIP = r.TargetedProduct.UniversalIP
-                },
-                UniversalIP = r.UniversalIP,
-                Website = r.Website
-            })
-            .ToList());
+            .ToList();
+        var itemsDto = _mapper.Map<IEnumerable<RFQDTO>>(items);
+        return await Task.Run(() => itemsDto);
     }
 
     // GET RFQ/Get/5
@@ -85,60 +53,23 @@ public class RFQController : Controller
         var item = _context.RFQs
             .Include(r => r.TargetedProduct)
             .Include(r => r.SelectedEdition)
-            .Select(r => new RFQ
-            {
-                Address = r.Address,
-                CompanyArabicName = r.CompanyArabicName,
-                CompanyEnglishName = r.CompanyEnglishName,
-                ContactPersonArabicName = r.ContactPersonArabicName,
-                ContactPersonEmail = r.ContactPersonEmail,
-                ContactPersonEnglishName = r.ContactPersonEnglishName,
-                ContactPersonMobile = r.ContactPersonMobile,
-                ContactPersonPosition = r.ContactPersonPosition,
-                Location = r.Location,
-                PhoneNumber = r.PhoneNumber,
-                RFQCode = r.RFQCode,
-                RFQId = r.RFQId,
-                SelectedEditionId = r.SelectedEditionId,
-                SelectedEdition = new ProductEdition
-                {
-                    ArabicName = r.SelectedEdition.ArabicName,
-                    Created = r.SelectedEdition.Created,
-                    EnglishName = r.SelectedEdition.EnglishName,
-                    Id = r.SelectedEdition.Id,
-                    ProductId = r.SelectedEdition.ProductId,
-                    UniversalIP = r.SelectedEdition.UniversalIP
-                },
-                Status = r.Status,
-                SubmissionTime = r.SubmissionTime,
-                TargetedProductId = r.TargetedProductId,
-                TargetedProduct = new Product
-                {
-                    ArabicName = r.TargetedProduct.ArabicName,
-                    Created = r.TargetedProduct.Created,
-                    EnglishName = r.TargetedProduct.EnglishName,
-                    Id = r.TargetedProduct.Id,
-                    UniversalIP = r.TargetedProduct.UniversalIP
-                },
-                UniversalIP = r.UniversalIP,
-                Website = r.Website
-            })
-        .SingleOrDefault(o => o.RFQId == id);
+            .SingleOrDefault(o => o.RFQId == id);
 
         if (item == null)
         {
             return await Task.Run(() => NotFound());
         }
 
-        return await Task.Run(() => new ObjectResult(item));
+        var itemDto = _mapper.Map<RFQDTO>(item);
+        return await Task.Run(() => new ObjectResult(itemDto));
     }
 
     // POST RFQ/Post
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult> Post([FromBody]RFQ rfq)
+    public async Task<ActionResult> Post([FromBody]RFQDTO rfqDto)
     {
-        if (rfq == null)
+        if (rfqDto == null)
         {
             return await Task.Run(() => BadRequest());
         }
@@ -147,11 +78,13 @@ public class RFQController : Controller
 
         try
         {
-            rfq.RFQCode = DateTime.Now.Ticks.ToString();
-            rfq.SubmissionTime = DateTime.Now;
+            rfqDto.RFQCode = DateTime.Now.Ticks.ToString();
+            rfqDto.SubmissionTime = DateTime.Now;
 
+            var rfq = _mapper.Map<RFQ>(rfqDto);
             _context.RFQs.Add(rfq);
             _context.SaveChanges();
+            rfqDto = _mapper.Map(rfq, rfqDto);
             saved = true;
         }
         catch (System.Exception)
@@ -163,7 +96,7 @@ public class RFQController : Controller
         if (!saved)
             return await Task.Run(() => new NoContentResult());
 
-        if (rfq.SendEmail)
+        if (rfqDto.SendEmail)
         {
             bool sent = false;
             try
@@ -176,10 +109,10 @@ public class RFQController : Controller
                 }
 
                 string[] tags = new[] { "Name", "phone" };
-                string[] tagValues = new[] { rfq.ContactPersonEnglishName, rfq.ContactPersonMobile };
+                string[] tagValues = new[] { rfqDto.ContactPersonEnglishName, rfqDto.ContactPersonMobile };
                 MailHelper.sendMail(new MailData
                 {
-                    Message = new MailMessageData(new[] { rfq.ContactPersonEmail })
+                    Message = new MailMessageData(new[] { rfqDto.ContactPersonEmail })
                     {
                         Body = MailHelper.MessageBody(htmlTemplate, tags, tagValues)
                     },
@@ -203,60 +136,22 @@ public class RFQController : Controller
                     Comments = "Automated Email",
                     RepresentativeId = 0,
                     SubmissionTime = DateTime.Now,
-                    UniversalIP = rfq.UniversalIP
+                    UniversalIP = rfqDto.UniversalIP
                 };
-                var newRfq = _context.RFQs.Where(r => r.RFQId == rfq.RFQId).Include(r => r.RFQActions).SingleOrDefault();
+                var newRfq = _context.RFQs.Where(r => r.RFQId == rfqDto.RFQId).Include(r => r.RFQActions).SingleOrDefault();
                 newRfq.RFQActions.Add(rfqAction);
                 _context.SaveChanges();
             }
         }
 
         var _rfq = _context.RFQs
-            .Where(r => r.RFQId == rfq.RFQId)
+            .Where(r => r.RFQId == rfqDto.RFQId)
             .Include(r => r.SelectedEdition)
             .Include(r => r.TargetedProduct)
             .SingleOrDefault();
+        rfqDto = _mapper.Map(_rfq, rfqDto);
 
-        var retRfq = new RFQ
-        {
-            Address = _rfq.Address,
-            CompanyArabicName = _rfq.CompanyArabicName,
-            CompanyEnglishName = _rfq.CompanyEnglishName,
-            ContactPersonArabicName = _rfq.ContactPersonArabicName,
-            ContactPersonEmail = _rfq.ContactPersonEmail,
-            ContactPersonEnglishName = _rfq.ContactPersonEnglishName,
-            ContactPersonMobile = _rfq.ContactPersonMobile,
-            ContactPersonPosition = _rfq.ContactPersonPosition,
-            Location = _rfq.Location,
-            PhoneNumber = _rfq.PhoneNumber,
-            RFQCode = _rfq.RFQCode,
-            RFQId = _rfq.RFQId,
-            SelectedEdition = new ProductEdition
-            {
-                ArabicName = _rfq.SelectedEdition.ArabicName,
-                Created = _rfq.SelectedEdition.Created,
-                EnglishName = _rfq.SelectedEdition.EnglishName,
-                Id = _rfq.SelectedEdition.Id,
-                ProductId = _rfq.SelectedEdition.ProductId,
-                UniversalIP = _rfq.SelectedEdition.UniversalIP
-            },
-            SelectedEditionId = _rfq.SelectedEditionId,
-            Status = _rfq.Status,
-            SubmissionTime = _rfq.SubmissionTime,
-            TargetedProduct = new Product
-            {
-                ArabicName = _rfq.TargetedProduct.ArabicName,
-                Created = _rfq.TargetedProduct.Created,
-                EnglishName = _rfq.TargetedProduct.EnglishName,
-                Id = _rfq.TargetedProduct.Id,
-                UniversalIP = _rfq.TargetedProduct.UniversalIP,
-            },
-            TargetedProductId = _rfq.TargetedProductId,
-            UniversalIP = _rfq.UniversalIP,
-            Website = _rfq.Website
-        };
-
-        return await Task.Run(() => new ObjectResult(retRfq));
+        return await Task.Run(() => new ObjectResult(rfqDto));
     }
 
     // POST rfq/sendMail/1/1
@@ -326,9 +221,9 @@ public class RFQController : Controller
 
     // PUT RFQ/Put/5
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, [FromBody]RFQ rfq)
+    public async Task<ActionResult> Put(int id, [FromBody]RFQDTO rfqDto)
     {
-        if (rfq == null || rfq.RFQId != id)
+        if (rfqDto == null || rfqDto.RFQId != id)
         {
             return await Task.Run(() => BadRequest());
         }
@@ -339,72 +234,35 @@ public class RFQController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        orgItem.Address = rfq.Address;
-        orgItem.CompanyArabicName = rfq.CompanyArabicName;
-        orgItem.CompanyEnglishName = rfq.CompanyEnglishName;
-        orgItem.ContactPersonArabicName = rfq.ContactPersonArabicName;
-        orgItem.ContactPersonEmail = rfq.ContactPersonEmail;
-        orgItem.ContactPersonEnglishName = rfq.ContactPersonEnglishName;
-        orgItem.ContactPersonMobile = rfq.ContactPersonMobile;
-        orgItem.ContactPersonPosition = rfq.ContactPersonPosition;
-        orgItem.Location = rfq.Location;
-        orgItem.PhoneNumber = rfq.PhoneNumber;
-        orgItem.SelectedEditionId = rfq.SelectedEditionId;
-        orgItem.Status = rfq.Status;
-        orgItem.SubmissionTime = DateTime.Now;
-        orgItem.TargetedProductId = rfq.TargetedProductId;
-        orgItem.UniversalIP = rfq.UniversalIP;
-        orgItem.Website = rfq.Website;
+        orgItem = _mapper.Map(rfqDto, orgItem);
+        // orgItem.Address = rfqDto.Address;
+        // orgItem.CompanyArabicName = rfqDto.CompanyArabicName;
+        // orgItem.CompanyEnglishName = rfqDto.CompanyEnglishName;
+        // orgItem.ContactPersonArabicName = rfqDto.ContactPersonArabicName;
+        // orgItem.ContactPersonEmail = rfqDto.ContactPersonEmail;
+        // orgItem.ContactPersonEnglishName = rfqDto.ContactPersonEnglishName;
+        // orgItem.ContactPersonMobile = rfqDto.ContactPersonMobile;
+        // orgItem.ContactPersonPosition = rfqDto.ContactPersonPosition;
+        // orgItem.Location = rfqDto.Location;
+        // orgItem.PhoneNumber = rfqDto.PhoneNumber;
+        // orgItem.SelectedEditionId = rfqDto.SelectedEditionId;
+        // orgItem.Status = rfqDto.Status;
+        // orgItem.SubmissionTime = DateTime.Now;
+        // orgItem.TargetedProductId = rfqDto.TargetedProductId;
+        // orgItem.UniversalIP = rfqDto.UniversalIP;
+        // orgItem.Website = rfqDto.Website;
 
         _context.RFQs.Update(orgItem);
         _context.SaveChanges();
 
         var _rfq = _context.RFQs
-            .Where(r => r.RFQId == rfq.RFQId)
+            .Where(r => r.RFQId == rfqDto.RFQId)
             .Include(r => r.SelectedEdition)
             .Include(r => r.TargetedProduct)
             .SingleOrDefault();
+        rfqDto = _mapper.Map(_rfq, rfqDto);
 
-        var retRfq = new RFQ
-        {
-            Address = _rfq.Address,
-            CompanyArabicName = _rfq.CompanyArabicName,
-            CompanyEnglishName = _rfq.CompanyEnglishName,
-            ContactPersonArabicName = _rfq.ContactPersonArabicName,
-            ContactPersonEmail = _rfq.ContactPersonEmail,
-            ContactPersonEnglishName = _rfq.ContactPersonEnglishName,
-            ContactPersonMobile = _rfq.ContactPersonMobile,
-            ContactPersonPosition = _rfq.ContactPersonPosition,
-            Location = _rfq.Location,
-            PhoneNumber = _rfq.PhoneNumber,
-            RFQCode = _rfq.RFQCode,
-            RFQId = _rfq.RFQId,
-            SelectedEdition = new ProductEdition
-            {
-                ArabicName = _rfq.SelectedEdition.ArabicName,
-                Created = _rfq.SelectedEdition.Created,
-                EnglishName = _rfq.SelectedEdition.EnglishName,
-                Id = _rfq.SelectedEdition.Id,
-                ProductId = _rfq.SelectedEdition.ProductId,
-                UniversalIP = _rfq.SelectedEdition.UniversalIP
-            },
-            SelectedEditionId = _rfq.SelectedEditionId,
-            Status = _rfq.Status,
-            SubmissionTime = _rfq.SubmissionTime,
-            TargetedProduct = new Product
-            {
-                ArabicName = _rfq.TargetedProduct.ArabicName,
-                Created = _rfq.TargetedProduct.Created,
-                EnglishName = _rfq.TargetedProduct.EnglishName,
-                Id = _rfq.TargetedProduct.Id,
-                UniversalIP = _rfq.TargetedProduct.UniversalIP,
-            },
-            TargetedProductId = _rfq.TargetedProductId,
-            UniversalIP = _rfq.UniversalIP,
-            Website = _rfq.Website
-        };
-
-        return await Task.Run(() => new ObjectResult(retRfq));
+        return await Task.Run(() => new ObjectResult(rfqDto));
     }
 
     // DELETE RFQ/Delete/5
@@ -420,7 +278,8 @@ public class RFQController : Controller
         _context.RFQs.Remove(item);
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(item));
+        var itemDto = _mapper.Map<RFQDTO>(item);
+        return await Task.Run(() => new ObjectResult(itemDto));
     }
     #endregion
 

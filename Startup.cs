@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
+using PartnerManagement.Models.Mapping;
 
 namespace PartnerManagement
 {
@@ -73,11 +74,12 @@ namespace PartnerManagement
                         ClockSkew = TimeSpan.Zero // remove delay of token when expire
                     };
                 });
-
+            
+            // Auto Mapper
+            services.AddAutoMapper();
             
             // ===== MVC ========
             services.AddMvc();
-            services.AddAutoMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

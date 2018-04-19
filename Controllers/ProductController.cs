@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using AutoMapper;
+using PartnerManagement.Models.DTOs;
 
 [Authorize]
 [Route("[controller]/[action]")]
@@ -14,10 +16,12 @@ using System.Threading.Tasks;
 public class ProductController : Controller
 {
     CustomersGateContext _context;
+    IMapper _mapper;
 
-    public ProductController(CustomersGateContext context)
+    public ProductController(CustomersGateContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     [AllowAnonymous]
@@ -30,9 +34,10 @@ public class ProductController : Controller
     // GET Product/Get
     // GetAllProducts
     [HttpGet]
-    public async Task<IEnumerable<Product>> Get()
+    public async Task<IEnumerable<ProductDTO>> Get()
     {
-        return await Task.Run(() => _context.Products.ToList());
+        var items = _mapper.Map<IEnumerable<ProductDTO>>(_context.Products.ToList());
+        return await Task.Run(() => items);
     }
 
     // GET RFQ/Product/5
@@ -45,34 +50,36 @@ public class ProductController : Controller
         {
             return await Task.Run(() => NotFound());
         }
-
-        return await Task.Run(() => new ObjectResult(item));
+        
+        var itemDTO =  _mapper.Map<EmailSenderDTO>(item);
+        return await Task.Run(() => new ObjectResult(itemDTO));
     }
 
     // POST Product/Post
     // CreateProduct
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody]Product product)
+    public async Task<ActionResult> Post([FromBody]ProductDTO productDto)
     {
-        if (product == null)
+        if (productDto == null)
         {
             return await Task.Run(() => BadRequest());
         }
 
-        product.Created = DateTime.Now;
+        productDto.Created = DateTime.Now;
 
+        var product = _mapper.Map<Product>(productDto);
         _context.Products.Add(product);
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(product));
+        return await Task.Run(() => new ObjectResult(productDto));
     }
 
     // PUT Product/Put/5
     // UpdateProduct
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, [FromBody]Product product)
+    public async Task<ActionResult> Put(int id, [FromBody]ProductDTO productDto)
     {
-        if (product == null || product.Id != id)
+        if (productDto == null || productDto.Id != id)
         {
             return await Task.Run(() => BadRequest());
         }
@@ -83,14 +90,11 @@ public class ProductController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        orgItem.ArabicName = product.ArabicName;
-        orgItem.EnglishName = product.EnglishName;
-        orgItem.UniversalIP = product.UniversalIP;
-
+        orgItem = _mapper.Map(productDto, orgItem);
         _context.Products.Update(orgItem);
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(orgItem));
+        return await Task.Run(() => new ObjectResult(productDto));
     }
 
     // DELETE Product/Delete/5
@@ -104,10 +108,11 @@ public class ProductController : Controller
             return await Task.Run(() => NotFound());
         }
 
+        var delItem = _mapper.Map<ProductDTO>(item);
         _context.Products.Remove(item);
         _context.SaveChanges();
 
-        return await Task.Run(() => new NoContentResult());
+        return await Task.Run(() => new ObjectResult(delItem));
     }
     #endregion
 
@@ -127,19 +132,7 @@ public class ProductController : Controller
             return null;
         }
 
-        var editions = item.ProductEditions
-            .Select(e =>
-            {
-                return new
-                {
-                    e.ArabicName,
-                    e.Created,
-                    e.EnglishName,
-                    e.Id,
-                    e.ProductId,
-                    e.UniversalIP
-                };
-            });
+        var editions = _mapper.Map<IEnumerable<ProductEditionDTO>>(item.ProductEditions); 
 
         return await Task.Run(() => editions);
     }
@@ -159,20 +152,21 @@ public class ProductController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        var edition = item.ProductEditions
-            .Where(e => e.Id == editionId)
-            .Select(e =>
-            {
-                return new
-                {
-                    e.ArabicName,
-                    e.Created,
-                    e.EnglishName,
-                    e.Id,
-                    e.ProductId,
-                    e.UniversalIP
-                };
-            });
+        var edition = _mapper.Map<ProductEditionDTO>(item.ProductEditions.SingleOrDefault(e => e.Id == editionId));
+        // var edition = item.ProductEditions
+        //     .Where(e => e.Id == editionId)
+        //     .Select(e =>
+        //     {
+        //         return new
+        //         {
+        //             e.ArabicName,
+        //             e.Created,
+        //             e.EnglishName,
+        //             e.Id,
+        //             e.ProductId,
+        //             e.UniversalIP
+        //         };
+        //     });
 
         return await Task.Run(() => new ObjectResult(edition));
     }
@@ -180,7 +174,7 @@ public class ProductController : Controller
     // POST Product/AddEdition/5
     // AddProductEdition
     [HttpPost("{id}")]
-    public async Task<ActionResult> AddEdition(int id, [FromBody]ProductEdition edition)
+    public async Task<ActionResult> AddEdition(int id, [FromBody]ProductEditionDTO editionDto)
     {
         var item = _context.Products
             .Where(o => o.Id == id)
@@ -192,18 +186,19 @@ public class ProductController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        edition.Created = DateTime.Now;
+        editionDto.Created = DateTime.Now;
 
+        var edition = _mapper.Map<ProductEdition>(editionDto);
         item.ProductEditions.Add(edition);
         _context.SaveChanges();
 
-        return await Task.Run(() => new NoContentResult());
+        return await Task.Run(() => new ObjectResult(editionDto));
     }
 
     // POST Product/UpdateEdition/5/1
     // UpdateProductEdition
     [HttpPut("{id}/{editionId}")]
-    public async Task<ActionResult> UpdateEdition(int id, int editionId, [FromBody]ProductEdition edition)
+    public async Task<ActionResult> UpdateEdition(int id, int editionId, [FromBody]ProductEditionDTO editionDto)
     {
         try
         {
@@ -226,13 +221,10 @@ public class ProductController : Controller
                 return await Task.Run(() => NotFound());
             }
 
-            orgEdition.ArabicName = edition.ArabicName;
-            orgEdition.EnglishName = edition.EnglishName;
-            orgEdition.UniversalIP = edition.UniversalIP;
-
+            orgEdition = _mapper.Map(editionDto, orgEdition);
             _context.SaveChanges();
 
-            return await Task.Run(() => new NoContentResult());
+            return await Task.Run(() => new ObjectResult(editionDto));
         }
         catch(Exception ex)
          {
@@ -269,7 +261,8 @@ public class ProductController : Controller
         item.ProductEditions.Remove(edition);
         _context.SaveChanges();
 
-        return await Task.Run(() => new NoContentResult());
+        var editionDto = _mapper.Map<ProductEditionDTO>(edition);
+        return await Task.Run(() => new ObjectResult(editionDto));
     }
     #endregion
 }

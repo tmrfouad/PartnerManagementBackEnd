@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using System.Net;
+using AutoMapper;
+using PartnerManagement.Models.DTOs;
 
 [Route("[controller]/[action]")]
 [EnableCors("AllowAnyOrigin")]
@@ -17,41 +19,46 @@ using System.Net;
 public class MailController : Controller
 {
     CustomersGateContext _context;
+    IMapper _mapper;
 
-    public MailController(CustomersGateContext context)
+    public MailController(CustomersGateContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     // GET mail/get
     [HttpGet]
-    public async Task<IEnumerable<EmailTemplate>> Get()
+    public async Task<IEnumerable<EmailTemplateDTO>> Get()
     {
-        return await Task.Run(() => _context.EmailTemplates.ToList());
+        var items = _mapper.Map<IEnumerable<EmailTemplateDTO>>(_context.EmailTemplates.ToList());
+        return await Task.Run(() => items);
     }
 
     // GET mail/getById/1
     [HttpGet("{id}")]
-    public async Task<EmailTemplate> GetById(int id)
+    public async Task<EmailTemplateDTO> GetById(int id)
     {
-        return await Task.Run(() => _context.EmailTemplates
-            .SingleOrDefault(e => e.Id == id));
+        var item = _mapper.Map<EmailTemplateDTO>(_context.EmailTemplates.SingleOrDefault(e => e.Id == id));
+        return await Task.Run(() => item);
     }
 
     // POST mail/post
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody]EmailTemplate template)
+    public async Task<ActionResult> Post([FromBody]EmailTemplateDTO templateDto)
     {
-        if (template == null)
+        if (templateDto == null)
         {
             return await Task.Run(() => BadRequest());
         }
 
-        template.Created = DateTime.Now;
+        templateDto.Created = DateTime.Now;
+
+        var template = _mapper.Map<EmailTemplate>(templateDto);
         _context.EmailTemplates.Add(template);
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(template));
+        return await Task.Run(() => new ObjectResult(templateDto));
     }
 
     // POST mail/send
@@ -70,14 +77,14 @@ public class MailController : Controller
 
     // PUT mail/put/1
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, [FromBody]EmailTemplate template)
+    public async Task<ActionResult> Put(int id, [FromBody]EmailTemplateDTO templateDto)
     {
-        if (template == null)
+        if (templateDto == null)
         {
             return await Task.Run(() => BadRequest());
         }
 
-        EmailTemplate orgTemplate = _context.EmailTemplates
+        var orgTemplate = _context.EmailTemplates
             .SingleOrDefault(e => e.Id == id);
 
         if (orgTemplate == null)
@@ -85,14 +92,13 @@ public class MailController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        orgTemplate.HtmlTemplate = template.HtmlTemplate;
-        orgTemplate.Subject = template.Subject;
-        orgTemplate.UniversalIP = template.UniversalIP;
-
-        _context.EmailTemplates.Update(orgTemplate);
+        orgTemplate = _mapper.Map(templateDto, orgTemplate);
+        // orgTemplate.HtmlTemplate = templateDto.HtmlTemplate;
+        // orgTemplate.Subject = templateDto.Subject;
+        // orgTemplate.UniversalIP = templateDto.UniversalIP;
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(orgTemplate));
+        return await Task.Run(() => new ObjectResult(templateDto));
     }
 
     // PUT mail/delete/1
@@ -110,6 +116,7 @@ public class MailController : Controller
         _context.EmailTemplates.Remove(template);
         _context.SaveChanges();
 
-        return await Task.Run(() => new ObjectResult(template));
+        var templateDto = _mapper.Map<EmailTemplateDTO>(template);
+        return await Task.Run(() => new ObjectResult(templateDto));
     }
 }

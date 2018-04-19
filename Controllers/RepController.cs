@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using AutoMapper;
+using PartnerManagement.Models.DTOs;
 
 [Authorize]
 [Route("[controller]/[action]")]
@@ -15,26 +17,29 @@ using System.Threading.Tasks;
 
 public class RepController : Controller
 {
-    CustomersGateContext _db;
+    CustomersGateContext _context;
+    IMapper _mapper;
 
-    public RepController(CustomersGateContext context)
+    public RepController(CustomersGateContext context, IMapper mapper)
     {
-        _db = context;
+        _context = context;
+        _mapper = mapper;
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post([FromBody]Representative Repitem)
+    public async Task<ActionResult> Post([FromBody]RepresentativeDTO repDto)
     {
         try
         {
-            if (Repitem == null)
+            if (repDto == null)
                 return NoContent();
 
-        Repitem.Created = DateTime.Now;  
-        _db.Representatives.Add(Repitem);
-        _db.SaveChanges();
+            repDto.Created = DateTime.Now;
+            var rep = _mapper.Map<Representative>(repDto);
+            _context.Representatives.Add(rep);
+            _context.SaveChanges();
 
-             return await Task.Run(() => new ObjectResult(Repitem));
+            return await Task.Run(() => new ObjectResult(repDto));
         }
         catch
         {
@@ -43,19 +48,19 @@ public class RepController : Controller
     }
 
     [HttpGet]
-    [AllowAnonymous]
-    public IEnumerable<Representative> get()
+    public async Task<IEnumerable<RepresentativeDTO>> Get()
     {
-        return _db.Representatives.ToList();
+        var items = _mapper.Map<IEnumerable<RepresentativeDTO>>(_context.Representatives.ToList());
+        return await Task.Run(() => items);
     }
 
     [HttpGet("{id}")]
-    public async Task<Representative> get(int id)
+    public async Task<RepresentativeDTO> Get(int id)
     {
         try
         {
-            var rep = _db.Representatives.SingleOrDefault(x => x.Id == id);
-            return await Task.Run(() => rep);
+            var repDto = _mapper.Map<RepresentativeDTO>(_context.Representatives.SingleOrDefault(x => x.Id == id));
+            return await Task.Run(() => repDto);
         }
         catch
         {
@@ -64,30 +69,32 @@ public class RepController : Controller
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id,[FromBody] Representative representative)
+    public async Task<ActionResult> Put(int id, [FromBody] RepresentativeDTO repDto)
     {
         try
         {
-            var rep = _db.Representatives.Find(id);
+            var orgRep = _context.Representatives.Find(id);
 
-            if (id != representative.Id)
+            if (id != repDto.Id)
                 return BadRequest();
 
-            if (rep == null)
+            if (orgRep == null)
                 return BadRequest();
 
-            rep.Address = representative.Address;
-            rep.Continuous = representative.Continuous;
-            rep.DateOfBirth = representative.DateOfBirth;
-            rep.Name = representative.Name;
-            rep.PersonalPhone = representative.PersonalPhone;
-            rep.Phone = representative.Phone;
-            rep.Position = representative.Position;
-            rep.Created = DateTime.Now;
-            rep.UniversalIP = representative.UniversalIP;
-            rep.Email = representative.Email;
-            _db.SaveChanges();
-            return await Task.Run(() => new ObjectResult(rep));
+            // rep.Address = repDto.Address;
+            // rep.Continuous = repDto.Continuous;
+            // rep.DateOfBirth = repDto.DateOfBirth;
+            // rep.Name = repDto.Name;
+            // rep.PersonalPhone = repDto.PersonalPhone;
+            // rep.Phone = repDto.Phone;
+            // rep.Position = repDto.Position;
+            // rep.Created = DateTime.Now;
+            // rep.UniversalIP = repDto.UniversalIP;
+            // rep.Email = repDto.Email;
+
+            orgRep = _mapper.Map(repDto, orgRep);
+            _context.SaveChanges();
+            return await Task.Run(() => new ObjectResult(repDto));
         }
         catch
         {
@@ -101,14 +108,15 @@ public class RepController : Controller
     {
         try
         {
-            var representative = _db.Representatives.Find(id);
-            if (representative == null)
+            var rep = _context.Representatives.Find(id);
+            if (rep == null)
                 return BadRequest();
 
-            _db.Representatives.Remove(representative);
-            _db.SaveChanges();
+            _context.Representatives.Remove(rep);
+            _context.SaveChanges();
 
-            return await Task.Run(() => new NoContentResult());
+            var repDto = _mapper.Map<RepresentativeDTO>(rep);
+            return await Task.Run(() => new ObjectResult(repDto));
         }
         catch
         {
