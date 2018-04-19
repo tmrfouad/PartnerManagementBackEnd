@@ -1,16 +1,11 @@
-using System;
-
-namespace PartnerManagement.Models
+namespace PartnerManagement.Models.DTOs
 {
-    public class RFQActionAtt
+    public class RFQActionAttDTO
     {
         public string FileName { get; set; }
         public string FileUrl { get; set; }
         public string FileType { get; set; }
         public int RFQActionId { get; set; }
-
-        public RFQAction RFQAction { get; set; }
-
         public string Value { get; set; }
     }
 }

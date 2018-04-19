@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace acscustomersgatebackend.Models
+namespace PartnerManagement.Models
 {
     public class Product
     {

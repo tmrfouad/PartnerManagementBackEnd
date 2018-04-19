@@ -1,23 +1,23 @@
 using System;
 using System.Collections.Generic;
+using PartnerManagement.Models.Enumerations;
 
-namespace PartnerManagement.Models
+namespace PartnerManagement.Models.DTOs
 {
-    public class RFQAction
+    public class RFQActionDTO
     {
         public int Id { get; set; }
         public string ActionCode { get; set; }
         public DateTime ActionTime { get; set; }
-        public Enumerations.ActionType ActionType { get; set; }
+        public ActionType ActionType { get; set; }
         public string Comments { get; set; }
         public string UniversalIP { get; set; }
         public DateTime SubmissionTime { get; set; }
 
         // Navigation Properties
         public int RFQId { get; set; }
-        public RFQ RFQ { get; set; }
         public int RepresentativeId { get; set; }
-        public Representative Representative { get; set; }
-        public ICollection<RFQActionAtt> RFQActionAtts { get; set; }
+        public RepresentativeDTO Representative { get; set; }
+        public ICollection<RFQActionAttDTO> RFQActionAtts { get; set; }
     }
 }

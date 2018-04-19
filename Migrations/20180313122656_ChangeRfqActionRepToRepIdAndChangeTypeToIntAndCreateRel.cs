@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace acscustomersgatebackend.Migrations
+namespace PartnerManagement.Migrations
 {
     public partial class ChangeRfqActionRepToRepIdAndChangeTypeToIntAndCreateRel : Migration
     {

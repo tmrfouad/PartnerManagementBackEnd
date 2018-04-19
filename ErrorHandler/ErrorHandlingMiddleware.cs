@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 
-namespace acscustomersgatebackend
+namespace PartnerManagement
 {
     public class ErrorHandlingMiddleware
     {

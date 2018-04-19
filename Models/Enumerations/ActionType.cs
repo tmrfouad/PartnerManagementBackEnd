@@ -1,4 +1,4 @@
-namespace acscustomersgatebackend.Models.Enumerations
+namespace PartnerManagement.Models.Enumerations
 {
     public enum ActionType
     {

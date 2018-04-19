@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 
-namespace PartnerManagement.Models
+namespace PartnerManagement.Models.DTOs
 {
-    public class EmailSender
+    public class EmailSenderDTO
     {
         public int Id { get; set; }
         public string Email { get; set; }

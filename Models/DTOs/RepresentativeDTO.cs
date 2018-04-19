@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 
-namespace PartnerManagement.Models
+namespace PartnerManagement.Models.DTOs
 {
-    public class Representative 
+    public class RepresentativeDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -17,7 +16,5 @@ namespace PartnerManagement.Models
 
         public DateTime Created { get; set; }
         public string UniversalIP { get; set; }
-
-        public ICollection<RFQAction> RFQActions { get; set; }
     }
 }

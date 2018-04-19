@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace acscustomersgatebackend.Models.EntityTypeConfigurations
+namespace PartnerManagement.Models.EntityTypeConfigurations
 {
     public class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate>
     {

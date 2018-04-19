@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using acscustomersgatebackend.Models.EntityTypeConfigurations;
+using PartnerManagement.Models.EntityTypeConfigurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace acscustomersgatebackend.Models
+namespace PartnerManagement.Models
 {
     public class CustomersGateContext : IdentityDbContext
     {

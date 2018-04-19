@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using PartnerManagement.Models.Enumerations;
 
-namespace PartnerManagement.Models
+namespace PartnerManagement.Models.DTOs
 {
-    public class RFQ
+    public class RFQDTO
     {
         public int RFQId { get; set; }
         public string RFQCode { get; set; }
@@ -24,13 +24,14 @@ namespace PartnerManagement.Models
         public string UniversalIP { get; set; }
 
         // Navigation Properties
-        public ICollection<RFQAction> RFQActions { get; set; }
+        public ICollection<RFQActionDTO> RFQActions { get; set; }
         public int TargetedProductId { get; set; }
-        public Product TargetedProduct { get; set; }
+        public ProductDTO TargetedProduct { get; set; }
         public int SelectedEditionId { get; set; }
-        public ProductEdition SelectedEdition { get; set; }
+        public ProductEditionDTO SelectedEdition { get; set; }
 
         // Not Mapped Properties
         public bool SendEmail { get; set; } = false;
+
     }
 }
