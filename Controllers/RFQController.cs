@@ -234,8 +234,10 @@ public class RFQController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        _mapper.Map(rfqDto, orgItem, m => {
-            m.AfterMap((dto, org) => {
+        _mapper.Map(rfqDto, orgItem, m =>
+        {
+            m.AfterMap((dto, org) =>
+            {
                 org.SelectedEdition = null;
                 org.TargetedProduct = null;
             });
@@ -521,7 +523,11 @@ public class RFQController : Controller
     [HttpPut("{id}/{actionId}", Name = "UpdateRFQAction")]
     public async Task<ActionResult> UpdateStatus(int id, int actionId, [FromBody]RFQActionDTO actionDto)
     {
-        var item = _context.RFQs.Where(o => o.RFQId == id).Include(r => r.RFQActions).ThenInclude(a => a.RFQActionAtts).FirstOrDefault();
+        var item = _context.RFQs
+            .Where(o => o.RFQId == id)
+            .Include(r => r.RFQActions)
+            .ThenInclude(a => a.RFQActionAtts)
+            .FirstOrDefault();
 
         if (item == null)
         {
@@ -536,6 +542,13 @@ public class RFQController : Controller
         }
 
         orgAction = _mapper.Map(actionDto, orgAction);
+        _mapper.Map(actionDto, orgAction, m =>
+        {
+            m.AfterMap((dto, org) =>
+            {
+                org.Representative = null;
+            });
+        });
         // orgAction.ActionType = actionDto.ActionType;
         // orgAction.RepresentativeId = actionDto.RepresentativeId;
         // orgAction.Comments = actionDto.Comments;
