@@ -58,6 +58,7 @@ public class MailSenderController : Controller
         _context.EmailSenders.Add(_sender);
         _context.SaveChanges();
 
+        sender = _mapper.Map<EmailSenderDTO>(_sender);
         return await Task.Run(() => new ObjectResult(sender));
     }
 

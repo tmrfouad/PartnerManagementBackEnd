@@ -50,7 +50,7 @@ public class RFQController : Controller
     [HttpGet("{id}", Name = "GetRFQ")]
     public async Task<ActionResult> Get(int id)
     {
-        var item = _context.RFQs
+        var item = _context.RFQs.AsNoTracking()
             .Include(r => r.TargetedProduct)
             .Include(r => r.SelectedEdition)
             .SingleOrDefault(o => o.RFQId == id);
@@ -234,7 +234,12 @@ public class RFQController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        orgItem = _mapper.Map(rfqDto, orgItem);
+        _mapper.Map(rfqDto, orgItem, m => {
+            m.AfterMap((dto, org) => {
+                org.SelectedEdition = null;
+                org.TargetedProduct = null;
+            });
+        });
         // orgItem.Address = rfqDto.Address;
         // orgItem.CompanyArabicName = rfqDto.CompanyArabicName;
         // orgItem.CompanyEnglishName = rfqDto.CompanyEnglishName;
@@ -252,7 +257,7 @@ public class RFQController : Controller
         // orgItem.UniversalIP = rfqDto.UniversalIP;
         // orgItem.Website = rfqDto.Website;
 
-        _context.RFQs.Update(orgItem);
+        // _context.RFQs.Update(orgItem);
         _context.SaveChanges();
 
         var _rfq = _context.RFQs
@@ -508,6 +513,7 @@ public class RFQController : Controller
         //     actionDto.UniversalIP
         // };
 
+        actionDto = _mapper.Map<RFQActionDTO>(action);
         return await Task.Run(() => new ObjectResult(actionDto));
     }
 

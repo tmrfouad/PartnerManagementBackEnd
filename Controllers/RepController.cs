@@ -39,6 +39,7 @@ public class RepController : Controller
             _context.Representatives.Add(rep);
             _context.SaveChanges();
 
+            repDto = _mapper.Map<RepresentativeDTO>(rep);
             return await Task.Run(() => new ObjectResult(repDto));
         }
         catch

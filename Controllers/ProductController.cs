@@ -71,6 +71,7 @@ public class ProductController : Controller
         _context.Products.Add(product);
         _context.SaveChanges();
 
+        productDto = _mapper.Map<ProductDTO>(product);
         return await Task.Run(() => new ObjectResult(productDto));
     }
 
@@ -192,6 +193,7 @@ public class ProductController : Controller
         item.ProductEditions.Add(edition);
         _context.SaveChanges();
 
+        editionDto = _mapper.Map<ProductEditionDTO>(edition);
         return await Task.Run(() => new ObjectResult(editionDto));
     }
 

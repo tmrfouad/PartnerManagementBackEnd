@@ -58,6 +58,7 @@ public class MailController : Controller
         _context.EmailTemplates.Add(template);
         _context.SaveChanges();
 
+        templateDto = _mapper.Map<EmailTemplateDTO>(template);
         return await Task.Run(() => new ObjectResult(templateDto));
     }
 
