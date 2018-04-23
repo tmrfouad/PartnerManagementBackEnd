@@ -11,7 +11,7 @@ using System;
 
 namespace PartnerManagement.Migrations
 {
-    [DbContext(typeof(CustomersGateContext))]
+    [DbContext(typeof(PartnerManagementContext))]
     [Migration("20180319075807_ChangeRfqTagetedProductAndSelectedBundleTypeToInt")]
     partial class ChangeRfqTagetedProductAndSelectedBundleTypeToInt
     {

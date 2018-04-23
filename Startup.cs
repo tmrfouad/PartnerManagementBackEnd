@@ -34,8 +34,8 @@ namespace PartnerManagement
         public void ConfigureServices(IServiceCollection services)
         {
             // ===== DbContext ========
-            var connection = Configuration.GetConnectionString("CustomersGateDatabase");
-            services.AddEntityFrameworkSqlServer().AddDbContext<CustomersGateContext>(opt => opt.UseSqlServer(connection));
+            var connection = Configuration.GetConnectionString("PartnerManagementDatabase");
+            services.AddEntityFrameworkSqlServer().AddDbContext<PartnerManagementContext>(opt => opt.UseSqlServer(connection));
 
             // ======== Cross-origin resource sharing =========
             services.AddCors(options =>
@@ -49,7 +49,7 @@ namespace PartnerManagement
 
             // ===== Identity ========
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<CustomersGateContext>()
+                .AddEntityFrameworkStores<PartnerManagementContext>()
                 .AddDefaultTokenProviders();
 
             // ===== Add Jwt Authentication ========
@@ -83,7 +83,7 @@ namespace PartnerManagement
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, CustomersGateContext dbContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, PartnerManagementContext dbContext)
         {
             if (env.IsDevelopment())
             {

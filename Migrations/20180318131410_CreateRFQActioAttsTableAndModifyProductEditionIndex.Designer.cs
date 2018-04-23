@@ -11,7 +11,7 @@ using System;
 
 namespace PartnerManagement.Migrations
 {
-    [DbContext(typeof(CustomersGateContext))]
+    [DbContext(typeof(PartnerManagementContext))]
     [Migration("20180318131410_CreateRFQActioAttsTableAndModifyProductEditionIndex")]
     partial class CreateRFQActioAttsTableAndModifyProductEditionIndex
     {

@@ -1,6 +1,6 @@
 namespace PartnerManagement.Models.Enumerations
 {
-    public enum Status
+    public enum RfqStatus
     {
         New = 0,
         Lead = 1,

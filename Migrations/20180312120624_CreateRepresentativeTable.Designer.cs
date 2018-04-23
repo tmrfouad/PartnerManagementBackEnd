@@ -11,7 +11,7 @@ using System;
 
 namespace PartnerManagement.Migrations
 {
-    [DbContext(typeof(CustomersGateContext))]
+    [DbContext(typeof(PartnerManagementContext))]
     [Migration("20180312120624_CreateRepresentativeTable")]
     partial class CreateRepresentativeTable
     {

@@ -18,10 +18,10 @@ using PartnerManagement.Models.DTOs;
 [Authorize]
 public class MailSenderController : Controller
 {
-    CustomersGateContext _context;
+    PartnerManagementContext _context;
     IMapper _mapper;
 
-    public MailSenderController(CustomersGateContext context, IMapper mapper)
+    public MailSenderController(PartnerManagementContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

@@ -18,10 +18,10 @@ using PartnerManagement.Models.DTOs;
 [EnableCors("AllowAnyOrigin")]
 public class RFQController : Controller
 {
-    CustomersGateContext _context;
+    PartnerManagementContext _context;
     IMapper _mapper;
 
-    public RFQController(CustomersGateContext context, IMapper mapper)
+    public RFQController(PartnerManagementContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -234,13 +234,11 @@ public class RFQController : Controller
             return await Task.Run(() => NotFound());
         }
 
-        _mapper.Map(rfqDto, orgItem, m =>
+        _mapper.Map(rfqDto, orgItem, opt =>
         {
-            m.AfterMap((dto, org) =>
-            {
-                org.SelectedEdition = null;
-                org.TargetedProduct = null;
-            });
+            opt.ConfigureMap()
+            .ForMember(tgt => tgt.TargetedProduct, op => op.Ignore())
+            .ForMember(tgt => tgt.SelectedEdition, op => op.Ignore());
         });
         // orgItem.Address = rfqDto.Address;
         // orgItem.CompanyArabicName = rfqDto.CompanyArabicName;
@@ -262,12 +260,12 @@ public class RFQController : Controller
         // _context.RFQs.Update(orgItem);
         _context.SaveChanges();
 
-        var _rfq = _context.RFQs
-            .Where(r => r.RFQId == rfqDto.RFQId)
-            .Include(r => r.SelectedEdition)
-            .Include(r => r.TargetedProduct)
-            .SingleOrDefault();
-        rfqDto = _mapper.Map(_rfq, rfqDto);
+        // var _rfq = _context.RFQs
+        //     .Where(r => r.RFQId == rfqDto.RFQId)
+        //     .Include(r => r.SelectedEdition)
+        //     .Include(r => r.TargetedProduct)
+        //     .SingleOrDefault();
+        // rfqDto = _mapper.Map(_rfq, rfqDto);
 
         return await Task.Run(() => new ObjectResult(rfqDto));
     }
@@ -542,12 +540,9 @@ public class RFQController : Controller
         }
 
         orgAction = _mapper.Map(actionDto, orgAction);
-        _mapper.Map(actionDto, orgAction, m =>
+        _mapper.Map(actionDto, orgAction, opt =>
         {
-            m.AfterMap((dto, org) =>
-            {
-                org.Representative = null;
-            });
+            opt.ConfigureMap().ForMember(tgt => tgt.Representative, op => op.Ignore());
         });
         // orgAction.ActionType = actionDto.ActionType;
         // orgAction.RepresentativeId = actionDto.RepresentativeId;

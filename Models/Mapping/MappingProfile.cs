@@ -23,6 +23,14 @@ namespace PartnerManagement.Models.Mapping
             .ReverseMap();
             CreateMap<RFQDTO, RFQ>()
             .ReverseMap();
+            CreateMap<PartnerDto, Partner>()
+            .ReverseMap();
+            CreateMap<SubscriptionDto, Subscription>()
+            .ReverseMap()
+                .ForMember(tgt => tgt.ProductName, opt => opt.MapFrom(src => src.Product.EnglishName))
+                .ForMember(tgt => tgt.ProductEditionName, opt => opt.MapFrom(src => src.ProductEdition.EnglishName));
+            CreateMap<InvoiceDto, Invoice>()
+            .ReverseMap();
         }
     }
 }

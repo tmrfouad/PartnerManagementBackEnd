@@ -17,10 +17,10 @@ using PartnerManagement.Models.DTOs;
 
 public class RepController : Controller
 {
-    CustomersGateContext _context;
+    PartnerManagementContext _context;
     IMapper _mapper;
 
-    public RepController(CustomersGateContext context, IMapper mapper)
+    public RepController(PartnerManagementContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

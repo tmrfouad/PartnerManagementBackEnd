@@ -11,7 +11,7 @@ using System;
 
 namespace PartnerManagement.Migrations
 {
-    [DbContext(typeof(CustomersGateContext))]
+    [DbContext(typeof(PartnerManagementContext))]
     [Migration("20180326071226_ChangeRepDeleteRuleToNoAction")]
     partial class ChangeRepDeleteRuleToNoAction
     {

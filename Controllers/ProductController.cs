@@ -15,10 +15,10 @@ using PartnerManagement.Models.DTOs;
 [EnableCors("AllowAnyOrigin")]
 public class ProductController : Controller
 {
-    CustomersGateContext _context;
+    PartnerManagementContext _context;
     IMapper _mapper;
 
-    public ProductController(CustomersGateContext context, IMapper mapper)
+    public ProductController(PartnerManagementContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

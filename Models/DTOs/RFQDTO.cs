@@ -19,7 +19,7 @@ namespace PartnerManagement.Models.DTOs
         public string Address { get; set; }
         public string ContactPersonArabicName { get; set; }
         public string ContactPersonPosition { get; set; }
-        public Status Status { get; set; }
+        public RfqStatus Status { get; set; }
         public DateTime SubmissionTime { get; set; }
         public string UniversalIP { get; set; }
 

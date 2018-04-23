@@ -10,7 +10,7 @@ using System;
 
 namespace PartnerManagement.Migrations
 {
-    [DbContext(typeof(CustomersGateContext))]
+    [DbContext(typeof(PartnerManagementContext))]
     [Migration("20180311130438_ChangeDateTime2ColumnsToDateTime")]
     partial class ChangeDateTime2ColumnsToDateTime
     {

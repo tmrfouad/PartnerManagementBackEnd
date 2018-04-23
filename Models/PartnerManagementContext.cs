@@ -9,15 +9,18 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace PartnerManagement.Models
 {
-    public class CustomersGateContext : IdentityDbContext
+    public class PartnerManagementContext : IdentityDbContext
     {
         public DbSet<RFQ> RFQs { get; set; }
         public DbSet<Representative> Representatives { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
         public DbSet<EmailSender> EmailSenders { get; set; }
+        public DbSet<Partner> Partners { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
 
-        public CustomersGateContext(DbContextOptions<CustomersGateContext> options) : base(options)
+        public PartnerManagementContext(DbContextOptions<PartnerManagementContext> options) : base(options)
         {
         }
 

@@ -11,7 +11,7 @@ using System;
 
 namespace PartnerManagement.Migrations
 {
-    [DbContext(typeof(CustomersGateContext))]
+    [DbContext(typeof(PartnerManagementContext))]
     [Migration("20180313113858_ChangeRepRepresentitiveIdToId")]
     partial class ChangeRepRepresentitiveIdToId
     {

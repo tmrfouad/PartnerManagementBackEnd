@@ -27,7 +27,8 @@ namespace PartnerManagement.Models.EntityTypeConfigurations
             entityTypeBuilder
                 .HasOne(a => a.Product)
                 .WithMany(r => r.ProductEditions)
-                .HasForeignKey(a => a.ProductId);
+                .HasForeignKey(a => a.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
