@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using PartnerManagement.Models.Enumerations;
 
 namespace PartnerManagement.Models
@@ -18,5 +19,6 @@ namespace PartnerManagement.Models
 
         // Navigation Properties
         public Subscription Subscription { get; set; }
+        public ICollection<InvoiceActivity> InvoiceActivities { get; set; }
     }
 }

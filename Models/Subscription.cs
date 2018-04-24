@@ -22,5 +22,6 @@ namespace PartnerManagement.Models
         public ProductEdition ProductEdition { get; set; }
         public Partner Partner { get; set; }
         public ICollection<Invoice> Invoices { get; set; }
+        public ICollection<SubscriptionUser> Users { get; set; }
     }
 }

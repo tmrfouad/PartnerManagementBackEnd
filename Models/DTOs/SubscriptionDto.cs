@@ -7,9 +7,11 @@ namespace PartnerManagement.Models.DTOs
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
-        public string ProductName { get; set; }
+        public string ProductArabicName { get; set; }
+        public string ProductEnglishName { get; set; }
         public int ProductEditionId { get; set; }
-        public string ProductEditionName { get; set; }
+        public string ProductEditionArabicName { get; set; }
+        public string ProductEditionEnglishName { get; set; }
         public int PartnerId { get; set; }
         public DateTime Date { get; set; }
         public int Duration { get; set; }
