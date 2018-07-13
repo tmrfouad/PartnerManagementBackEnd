@@ -37,6 +37,8 @@ namespace PartnerManagement.Models.Mapping
             .ReverseMap();
             CreateMap<InvoiceActivityDto, InvoiceActivity>()
             .ReverseMap();
+            CreateMap<InvoiceDetailDto, InvoiceDetail>()
+            .ReverseMap();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace PartnerManagement.Models.EntityTypeConfigurations
 
             builder.Property(u => u.SubscriptionId).IsRequired();
             builder.Property(u => u.Name).IsRequired().HasColumnType("nvarchar(150)");
-            builder.Property(u => u.IsActive).IsRequired().HasDefaultValue(false);
+            builder.Property(u => u.IsActive).IsRequired();
             builder.Property(u => u.UniversalIP).IsRequired().HasColumnType("nvarchar(20)");
             builder.Property(u => u.Created).IsRequired().HasColumnType("datetime");
             builder.Property(u => u.Modified).HasColumnType("datetime");

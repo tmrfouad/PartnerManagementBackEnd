@@ -20,7 +20,8 @@ namespace PartnerManagement.Models
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<SubscriptionUser> SubscriptionUsers { get; set; }
-        // public DbSet<InvoiceActivity> InvoiceActivities { get; set; }
+        public DbSet<InvoiceActivity> InvoiceActivities { get; set; }
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; }
 
         public PartnerManagementContext(DbContextOptions<PartnerManagementContext> options) : base(options)
         {
@@ -41,6 +42,7 @@ namespace PartnerManagement.Models
             modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionUserConfiguration());
             modelBuilder.ApplyConfiguration(new InvoiceActivityConfiguration());
+            modelBuilder.ApplyConfiguration(new InvoiceDetailConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -20,5 +20,6 @@ namespace PartnerManagement.Models
         // Navigation Properties
         public Subscription Subscription { get; set; }
         public ICollection<InvoiceActivity> InvoiceActivities { get; set; }
+        public ICollection<InvoiceDetail> InvoiceDetails { get; set; }
     }
 }

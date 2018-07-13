@@ -14,9 +14,9 @@ namespace PartnerManagement.Models.EntityTypeConfigurations
             builder.Property(i => i.SubscriptionId).IsRequired();
             builder.Property(i => i.InvoiceNo).IsRequired().HasColumnType("nvarchar(25)");
             builder.Property(i => i.Date).IsRequired().HasColumnType("datetime");
-            builder.Property(i => i.Price).IsRequired().HasDefaultValue(0);
-            builder.Property(i => i.Status).IsRequired().HasDefaultValue(InvoiceStatus.Issued);
-            builder.Property(i => i.Paid).IsRequired().HasDefaultValue(false);
+            builder.Property(i => i.Price).IsRequired();
+            builder.Property(i => i.Status).IsRequired();
+            builder.Property(i => i.Paid).IsRequired();
             builder.Property(i => i.UniversalIP).IsRequired().HasColumnType("nvarchar(20)");
             builder.Property(i => i.Created).IsRequired().HasColumnType("datetime");
             builder.Property(i => i.Modified).HasColumnType("datetime");

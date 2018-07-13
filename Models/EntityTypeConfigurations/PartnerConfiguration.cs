@@ -12,7 +12,7 @@ namespace PartnerManagement.Models.EntityTypeConfigurations
 
             builder.Property(p => p.Name).IsRequired().HasColumnType("nvarchar(150)");
             builder.Property(p => p.Email).IsRequired().HasColumnType("nvarchar(150)");
-            builder.Property(p => p.IsActive).IsRequired().HasDefaultValue(false);
+            builder.Property(p => p.IsActive).IsRequired();
             builder.Property(p => p.UniversalIP).IsRequired().HasColumnType("nvarchar(20)");
             builder.Property(p => p.Created).IsRequired().HasColumnType("datetime");
             builder.Property(p => p.Modified).HasColumnType("datetime");

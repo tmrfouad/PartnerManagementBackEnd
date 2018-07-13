@@ -2,8 +2,9 @@ namespace PartnerManagement.Models.Enumerations
 {
     public enum InvoiceStatus
     {
-        Issued = 0,
-        Published = 1,
-        Viewed = 2
+        Draft = 0,
+        Reviewed = 1,
+        Issued = 2,
+        Published = 3
     }
 }
